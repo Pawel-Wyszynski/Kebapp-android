@@ -71,7 +71,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(40.dp))
 
             ButtonComponent(value = "Zaloguj", onSelect = {
-
+                navController.navigate("homepage")
             })
 
             Spacer(modifier = Modifier.height(20.dp))
