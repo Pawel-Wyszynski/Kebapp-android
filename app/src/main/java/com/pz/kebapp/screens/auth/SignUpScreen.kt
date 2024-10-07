@@ -19,6 +19,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.pz.kebapp.R
 import com.pz.kebapp.components.ButtonComponent
 import com.pz.kebapp.components.ClickableTextComponent
@@ -30,7 +32,9 @@ import com.pz.kebapp.components.TextFieldComponent
 import com.pz.kebapp.ui.theme.Background
 
 @Composable
-fun SignUpScreen() {
+fun SignUpScreen(
+    navController: NavHostController
+) {
     val emailState = remember { mutableStateOf("") }
     val nameState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
@@ -95,7 +99,7 @@ fun SignUpScreen() {
                 valueInitial = "Masz już konto? ",
                 valueAnnotated = "Zaloguj się",
                 onTextSelected = {
-
+                    navController.navigate("login")
                 })
         }
     }
@@ -104,5 +108,5 @@ fun SignUpScreen() {
 @Preview
 @Composable
 fun SignUpScreenPreview() {
-    SignUpScreen()
+    SignUpScreen(rememberNavController())
 }
