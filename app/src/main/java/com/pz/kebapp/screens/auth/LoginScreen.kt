@@ -18,6 +18,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.pz.kebapp.R
 import com.pz.kebapp.components.ButtonComponent
 import com.pz.kebapp.components.ClickableTextComponent
@@ -29,7 +31,9 @@ import com.pz.kebapp.components.TextFieldComponent
 import com.pz.kebapp.ui.theme.Background
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    navController: NavHostController
+) {
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
     val context = LocalContext.current
@@ -80,7 +84,7 @@ fun LoginScreen() {
                 valueInitial = "Nie masz konta? ",
                 valueAnnotated = "Zarejestruj się",
                 onTextSelected = {
-
+                    navController.navigate("register")
                 })
         }
     }
@@ -89,5 +93,5 @@ fun LoginScreen() {
 @Preview
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen()
+    LoginScreen(rememberNavController())
 }
