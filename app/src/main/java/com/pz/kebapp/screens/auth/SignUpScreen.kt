@@ -46,7 +46,7 @@ fun SignUpScreen() {
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             ImageComponent(
-                painterResource = painterResource(id = R.drawable.kebapp_logo)
+                painterResource = painterResource(id = R.drawable.brodacz)
             )
 
             Spacer(modifier = Modifier.height(20.dp))
