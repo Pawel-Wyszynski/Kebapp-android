@@ -1,12 +1,10 @@
 package com.pz.kebapp.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -27,21 +25,14 @@ fun ClickableTextComponent(
 ) {
     val annotatedString = buildAnnotatedString {
         append(valueInitial)
-        pushStringAnnotation(
-            tag = valueAnnotated,
-            annotation = valueAnnotated
-        )
         withStyle(style = SpanStyle(color = TextFieldPrimaryColor)) {
+            pushStringAnnotation(tag = valueAnnotated, annotation = valueAnnotated)
             append(valueAnnotated)
         }
-        pop()
     }
-    BasicText(
-        text = annotatedString,
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = 40.dp)
-            .clickable { },
+    ClickableText(modifier = Modifier
+        .fillMaxWidth()
+        .heightIn(min = 40.dp),
         style = TextStyle(
             fontSize = 18.sp,
             fontFamily = nunitoSansFontFamily,
@@ -49,16 +40,12 @@ fun ClickableTextComponent(
             fontStyle = FontStyle.Normal,
             textAlign = TextAlign.Center
         ),
-        onTextLayout = { textLayoutResult ->
-            val clickHandler: (Offset) -> Unit = { offset ->
-                val position = textLayoutResult.getOffsetForPosition(offset)
-                annotatedString.getStringAnnotations(start = position, end = position)
-                    .firstOrNull()?.let { annotation ->
-                        if (annotation.item == valueAnnotated) {
-                            onTextSelected(annotation.item)
-                        }
+        text = annotatedString, onClick = { offset ->
+            annotatedString.getStringAnnotations(offset, offset)
+                .firstOrNull()?.also { span ->
+                    if (span.item == valueAnnotated) {
+                        onTextSelected(span.item)
                     }
-            }
-        }
-    )
+                }
+        })
 }
