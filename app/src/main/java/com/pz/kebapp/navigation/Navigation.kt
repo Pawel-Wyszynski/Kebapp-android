@@ -14,13 +14,13 @@ import com.pz.kebapp.screens.auth.SignUpScreen
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
-
-    NavHost(navController = navController, startDestination = "login") {
+    NavHost(navController = navController, startDestination = "navdrawer") {
+        composable("navdrawer") { NavDrawer(navController) }
         composable("login") { LoginScreen(navController) }
         composable("register") { SignUpScreen(navController) }
-        composable("homepage") { HomeScreen(navController) }
-        composable("contactus") { ContactUsScreen(navController) }
-        composable("favorites") { FavoritesScreen(navController) }
+        composable("home") { HomeScreen(navController) }
         composable("list") { ListScreen(navController) }
+        composable("favorites") { FavoritesScreen(navController) }
+        composable("contactus") { ContactUsScreen(navController) }
     }
 }
