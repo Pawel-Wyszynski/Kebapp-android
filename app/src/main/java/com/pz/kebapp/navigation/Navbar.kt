@@ -6,6 +6,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.*
@@ -20,49 +22,66 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.pz.kebapp.ContactUsScreen
-import com.pz.kebapp.FavoritesScreen
-import com.pz.kebapp.HomeScreen
-import com.pz.kebapp.ListScreen
 import com.pz.kebapp.R
 import com.pz.kebapp.components.HeadingTextComponent
+import com.pz.kebapp.screens.ContactUsScreen
+import com.pz.kebapp.screens.FavoritesScreen
+import com.pz.kebapp.screens.HomeScreen
+import com.pz.kebapp.screens.ListScreen
+import com.pz.kebapp.screens.auth.LoginScreen
 import com.pz.kebapp.ui.theme.Navbar
 import kotlinx.coroutines.launch
+
+data class NavItem(
+    val icon: ImageVector,
+    val text: String,
+    val route: () -> Unit
+)
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NavDrawer(
+fun Navbar(
     navController: NavHostController
 ) {
-    val items = listOf(
-        Items(Icons.Default.Home, "Home", route = { navController.navigate("home") }),
-        Items(
-            Icons.Default.ThumbUp,
-            "Favorites kebab shops",
+    val navItems = listOf(
+        NavItem(
+            icon = Icons.Default.Home,
+            text = "Home",
+            route = { navController.navigate("home") }
+        ),
+        NavItem(
+            icon = Icons.Default.Favorite,
+            text = "Ulubione kebaby",
             route = { navController.navigate("favorites") }),
-        Items(
-            Icons.Default.FilterList,
-            "List of kebab shops",
+        NavItem(
+            icon = Icons.AutoMirrored.Filled.List,
+            text = "Lista kebabów",
             route = { navController.navigate("list") }),
-        Items(
-            Icons.Default.ContactPage,
-            "Contact us",
+        NavItem(
+            icon = Icons.Default.Mail,
+            text = "Napisz do nas",
             route = { navController.navigate("contactus") }),
-        Items(Icons.Default.Logout, "Logout", route = { navController.navigate("home") }),
+        NavItem(
+            icon = Icons.AutoMirrored.Filled.Logout,
+            text = "Wyloguj",
+            route = { navController.navigate("login") }
+        ),
     )
 
-    var selectedItem by remember { mutableStateOf(0) }
+    var selectedItem by remember { mutableIntStateOf(0) }
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         gesturesEnabled = true,
         drawerContent = {
             ModalDrawerSheet {
-                Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -72,7 +91,7 @@ fun NavDrawer(
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.brodacz),
-                            contentDescription = "logo pic",
+                            contentDescription = null,
                             modifier = Modifier
                                 .size(160.dp)
                                 .clip(CircleShape)
@@ -82,11 +101,11 @@ fun NavDrawer(
                             thickness = 1.dp,
                         )
                     }
-                    items.forEachIndexed() { index, it ->
+                    navItems.forEachIndexed { index, it ->
                         NavigationDrawerItem(
                             label = { Text(text = it.text) },
                             selected = selectedItem == index,
-                            icon = { Icon(imageVector = it.icon, contentDescription = it.text) },
+                            icon = { Icon(imageVector = it.icon, contentDescription = null) },
                             modifier = Modifier.padding(horizontal = 16.dp),
                             onClick = {
                                 selectedItem = index
@@ -116,7 +135,7 @@ fun NavDrawer(
                         }) {
                             Icon(
                                 Icons.Rounded.Menu,
-                                contentDescription = "MenuButton"
+                                contentDescription = null
                             )
                         }
                     }
@@ -135,18 +154,12 @@ fun ContentScreen(modifier: Modifier, selectedItem: Int) {
         1 -> FavoritesScreen(rememberNavController())
         2 -> ListScreen(rememberNavController())
         3 -> ContactUsScreen(rememberNavController())
-        4 -> HomeScreen(rememberNavController())
+        4 -> LoginScreen(rememberNavController())
     }
 }
 
 @Preview
 @Composable
-fun NavDrawerPreview() {
-    NavDrawer(rememberNavController())
+fun NavbarPreview() {
+    Navbar(rememberNavController())
 }
-
-data class Items(
-    val icon: ImageVector,
-    val text: String,
-    val route: () -> Unit
-)
