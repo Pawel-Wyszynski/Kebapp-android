@@ -86,7 +86,7 @@ fun SignUpScreen(
             Spacer(modifier = Modifier.height(40.dp))
 
             ButtonComponent(value = "Zarejestruj", onSelect = {
-
+                navController.navigate("home")
             })
 
             Spacer(modifier = Modifier.height(20.dp))
