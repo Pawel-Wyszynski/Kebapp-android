@@ -15,8 +15,7 @@ import com.pz.kebapp.screens.auth.SignUpScreen
 fun Navigation() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "navbar") {
-        composable("navbar") { Navbar(navController) }
+    NavHost(navController = navController, startDestination = "home") {
         composable("login") { LoginScreen(navController) }
         composable("register") { SignUpScreen(navController) }
         composable("home") { HomeScreen(navController) }

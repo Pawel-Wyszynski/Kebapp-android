@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import com.pz.kebapp.R
 import com.pz.kebapp.components.HeadingTextComponent
 import com.pz.kebapp.components.ImageComponent
+import com.pz.kebapp.navigation.BottomNavigationBar
 import com.pz.kebapp.ui.theme.Background
 
 @Composable
@@ -25,13 +26,16 @@ fun ListScreen(
     navController: NavHostController
 ) {
     Scaffold(
+        bottomBar = {
+            BottomNavigationBar(screen = "Kebaby", navController)
+        },
         content = { paddingValues ->
             Surface(
                 color = Background,
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Background)
-                    .padding(28.dp, paddingValues.calculateTopPadding() + 80.dp, 28.dp, 28.dp)
+                    .padding(28.dp, 28.dp, 28.dp, paddingValues.calculateBottomPadding())
             ) {
                 Column(modifier = Modifier.fillMaxSize()) {
                     ImageComponent(
