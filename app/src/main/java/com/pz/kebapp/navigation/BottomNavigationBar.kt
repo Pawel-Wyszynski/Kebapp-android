@@ -11,9 +11,11 @@ import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Mail
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Mail
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -23,7 +25,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
+import com.pz.kebapp.data.SessionManager
+import com.pz.kebapp.functions.authFunctions.logoutFunction
 import com.pz.kebapp.ui.theme.Navbar
 import com.pz.kebapp.ui.theme.nunitoSansFontFamily
 
@@ -37,6 +42,9 @@ data class BottomNavItem(
 
 @Composable
 fun BottomNavigationBar(screen: String, navHostController: NavHostController) {
+    val context = LocalContext.current
+    val sessionManager = SessionManager(context)
+
     val bottomNavItems = listOf(
         BottomNavItem(
             route = { navHostController.navigate("home") },
@@ -66,12 +74,21 @@ fun BottomNavigationBar(screen: String, navHostController: NavHostController) {
             unselectedIcon = Icons.Outlined.Mail
         ),
 
-        BottomNavItem(
-            route = { navHostController.navigate("login") },
-            label = "Wyloguj",
-            selectedIcon = Icons.AutoMirrored.Filled.Logout,
-            unselectedIcon = Icons.AutoMirrored.Outlined.Logout
-        )
+        if (sessionManager.fetchAuthToken() != null) {
+            BottomNavItem(
+                route = { logoutFunction(context, navHostController) },
+                label = "Wyloguj",
+                selectedIcon = Icons.AutoMirrored.Filled.Logout,
+                unselectedIcon = Icons.AutoMirrored.Outlined.Logout
+            )
+        } else {
+            BottomNavItem(
+                route = { navHostController.navigate("login") },
+                label = "Konto",
+                selectedIcon = Icons.Filled.Person,
+                unselectedIcon = Icons.Outlined.Person
+            )
+        }
     )
     NavigationBar(containerColor = Navbar) {
         Row(

@@ -32,6 +32,7 @@ import com.pz.kebapp.components.HeadingTextComponent
 import com.pz.kebapp.components.ImageComponent
 import com.pz.kebapp.components.PasswordTextFieldComponent
 import com.pz.kebapp.components.TextFieldComponent
+import com.pz.kebapp.functions.authFunctions.registerFunction
 import com.pz.kebapp.navigation.BottomNavigationBar
 import com.pz.kebapp.ui.theme.Background
 
@@ -48,7 +49,7 @@ fun SignUpScreen(
 
     Scaffold(
         bottomBar = {
-            BottomNavigationBar(screen = "Wyloguj", navController)
+            BottomNavigationBar(screen = "Konto", navController)
         },
         content = { paddingValues ->
             Surface(
@@ -97,7 +98,14 @@ fun SignUpScreen(
                     Spacer(modifier = Modifier.height(40.dp))
 
                     ButtonComponent(value = "Zarejestruj", onSelect = {
-                        navController.navigate("home")
+                        registerFunction(
+                            emailState.value,
+                            passwordState.value,
+                            confirmPasswordState.value,
+                            nameState.value,
+                            context,
+                            navController
+                        )
                     })
 
                     Spacer(modifier = Modifier.height(20.dp))
