@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -28,66 +31,82 @@ import com.pz.kebapp.components.HeadingTextComponent
 import com.pz.kebapp.components.ImageComponent
 import com.pz.kebapp.components.PasswordTextFieldComponent
 import com.pz.kebapp.components.TextFieldComponent
+import com.pz.kebapp.functions.authFunctions.loginFunction
+import com.pz.kebapp.navigation.BottomNavigationBar
 import com.pz.kebapp.ui.theme.Background
 
 @Composable
 fun LoginScreen(
     navController: NavHostController
 ) {
+    val scrollState = rememberScrollState()
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
     val context = LocalContext.current
 
-    Surface(
-        color = Background,
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Background)
-            .padding(28.dp)
-    ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            ImageComponent(
-                painterResource = painterResource(id = R.drawable.brodacz)
-            )
+    Scaffold(
+        bottomBar = {
+            BottomNavigationBar(screen = "Konto", navController)
+        },
+        content = { paddingValues ->
+            Surface(
+                color = Background,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Background)
+                    .padding(28.dp, 28.dp, 28.dp, paddingValues.calculateBottomPadding())
+                    .verticalScroll(scrollState)
+            ) {
+                Column(modifier = Modifier.fillMaxSize()) {
+                    ImageComponent(
+                        painterResource = painterResource(id = R.drawable.brodacz)
+                    )
 
-            Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(20.dp))
 
-            HeadingTextComponent(value = "Zaloguj się")
+                    HeadingTextComponent(value = "Zaloguj się")
 
-            Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(20.dp))
 
-            TextFieldComponent(
-                labelValue = "Email",
-                icon = Icons.Default.Email,
-                textValue = emailState
-            )
+                    TextFieldComponent(
+                        labelValue = "Email",
+                        icon = Icons.Default.Email,
+                        textValue = emailState
+                    )
 
-            PasswordTextFieldComponent(
-                labelValue = "Hasło",
-                icon = Icons.Default.Lock,
-                passwordValue = passwordState
-            )
+                    PasswordTextFieldComponent(
+                        labelValue = "Hasło",
+                        icon = Icons.Default.Lock,
+                        passwordValue = passwordState
+                    )
 
-            Spacer(modifier = Modifier.height(40.dp))
+                    Spacer(modifier = Modifier.height(40.dp))
 
-            ButtonComponent(value = "Zaloguj", onSelect = {
-                navController.navigate("home")
-            })
+                    ButtonComponent(value = "Zaloguj", onSelect = {
+                        loginFunction(
+                            emailState.value,
+                            passwordState.value,
+                            context,
+                            navController
+                        )
+                    })
 
-            Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(20.dp))
 
-            DividerTextComponent(value = "lub")
+                    DividerTextComponent(value = "lub")
 
-            Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(20.dp))
 
-            ClickableTextComponent(
-                valueInitial = "Nie masz konta? ",
-                valueAnnotated = "Zarejestruj się",
-                onTextSelected = {
-                    navController.navigate("register")
-                })
+                    ClickableTextComponent(
+                        valueInitial = "Nie masz konta? ",
+                        valueAnnotated = "Zarejestruj się",
+                        onTextSelected = {
+                            navController.navigate("register")
+                        })
+                }
+            }
         }
-    }
+    )
 }
 
 @Preview
