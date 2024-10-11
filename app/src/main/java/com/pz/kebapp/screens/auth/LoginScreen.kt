@@ -31,6 +31,7 @@ import com.pz.kebapp.components.HeadingTextComponent
 import com.pz.kebapp.components.ImageComponent
 import com.pz.kebapp.components.PasswordTextFieldComponent
 import com.pz.kebapp.components.TextFieldComponent
+import com.pz.kebapp.functions.authFunctions.loginFunction
 import com.pz.kebapp.navigation.BottomNavigationBar
 import com.pz.kebapp.ui.theme.Background
 
@@ -45,7 +46,7 @@ fun LoginScreen(
 
     Scaffold(
         bottomBar = {
-            BottomNavigationBar(screen = "Wyloguj", navController)
+            BottomNavigationBar(screen = "Konto", navController)
         },
         content = { paddingValues ->
             Surface(
@@ -82,7 +83,12 @@ fun LoginScreen(
                     Spacer(modifier = Modifier.height(40.dp))
 
                     ButtonComponent(value = "Zaloguj", onSelect = {
-                        navController.navigate("home")
+                        loginFunction(
+                            emailState.value,
+                            passwordState.value,
+                            context,
+                            navController
+                        )
                     })
 
                     Spacer(modifier = Modifier.height(20.dp))
