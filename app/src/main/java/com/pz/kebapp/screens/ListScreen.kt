@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -25,6 +27,8 @@ import com.pz.kebapp.ui.theme.Background
 fun ListScreen(
     navController: NavHostController
 ) {
+    val scrollState = rememberScrollState()
+
     Scaffold(
         bottomBar = {
             BottomNavigationBar(screen = "Kebaby", navController)
@@ -36,6 +40,7 @@ fun ListScreen(
                     .fillMaxSize()
                     .background(Background)
                     .padding(28.dp, 28.dp, 28.dp, paddingValues.calculateBottomPadding())
+                    .verticalScroll(scrollState)
             ) {
                 Column(modifier = Modifier.fillMaxSize()) {
                     ImageComponent(
