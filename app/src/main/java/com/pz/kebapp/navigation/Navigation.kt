@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.pz.kebapp.screens.ContactUsScreen
 import com.pz.kebapp.screens.FavoritesScreen
+import com.pz.kebapp.screens.GuestScreen
 import com.pz.kebapp.screens.HomeScreen
 import com.pz.kebapp.screens.ListScreen
 import com.pz.kebapp.screens.auth.LoginScreen
@@ -22,5 +23,6 @@ fun Navigation() {
         composable("list") { ListScreen(navController) }
         composable("favorites") { FavoritesScreen(navController) }
         composable("contactus") { ContactUsScreen(navController) }
+        composable("guest") { GuestScreen(navController) }
     }
 }
