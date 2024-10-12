@@ -27,7 +27,6 @@ import com.pz.kebapp.components.ButtonComponent
 import com.pz.kebapp.components.HeadingTextComponent
 import com.pz.kebapp.components.ImageComponent
 import com.pz.kebapp.components.LongTextFieldComponent
-import com.pz.kebapp.data.SessionManager
 import com.pz.kebapp.functions.userFunctions.sendMessageFunction
 import com.pz.kebapp.navigation.BottomNavigationBar
 import com.pz.kebapp.ui.theme.Background
@@ -39,7 +38,6 @@ fun ContactUsScreen(
     val messageState = remember { mutableStateOf("") }
     val context = LocalContext.current
     val scrollState = rememberScrollState()
-    val sessionManager = SessionManager(context)
 
     Scaffold(
         bottomBar = {

@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pz.kebapp.R
+import com.pz.kebapp.components.ButtonComponent
 import com.pz.kebapp.components.HeadingTextComponent
 import com.pz.kebapp.components.ImageComponent
 import com.pz.kebapp.navigation.BottomNavigationBar
@@ -34,20 +35,36 @@ fun GuestScreen(
             BottomNavigationBar(screen = "Konto", navController)
         },
         content = { paddingValues ->
-            Surface(
-                color = Background,
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Background)
-                    .padding(28.dp, 28.dp, 28.dp, paddingValues.calculateBottomPadding())
-                    .verticalScroll(scrollState)
             ) {
-                Column(modifier = Modifier.fillMaxSize()) {
-                    ImageComponent(
-                        painterResource = painterResource(id = R.drawable.brodacz)
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
-                    HeadingTextComponent(value = "Guest")
+                Surface(
+                    color = Background,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Background)
+                        .padding(28.dp, 15.dp, 28.dp, paddingValues.calculateBottomPadding())
+                        .verticalScroll(scrollState)
+                ) {
+                    Column(modifier = Modifier.fillMaxSize()) {
+                        ImageComponent(
+                            painterResource = painterResource(id = R.drawable.brodacz)
+                        )
+
+                        Spacer(modifier = Modifier.height(50.dp))
+
+                        HeadingTextComponent(
+                            value = "Funkcja dostępna jest tylko dla zalogowanych użytkowników"
+                        )
+
+                        Spacer(modifier = Modifier.height(80.dp))
+
+                        ButtonComponent(value = "Zaloguj się", onSelect = {
+                            navController.navigate("login")
+                        })
+                    }
                 }
             }
         }
