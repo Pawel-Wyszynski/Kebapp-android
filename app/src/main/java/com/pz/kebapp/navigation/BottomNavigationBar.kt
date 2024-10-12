@@ -61,14 +61,26 @@ fun BottomNavigationBar(screen: String, navHostController: NavHostController) {
         ),
 
         BottomNavItem(
-            route = { navHostController.navigate("favorites") },
+            route = {
+                if (sessionManager.fetchAuthToken() != null) {
+                    navHostController.navigate("favorites")
+                } else {
+                    navHostController.navigate("guest")
+                }
+            },
             label = "Ulubione",
             selectedIcon = Icons.Filled.Favorite,
             unselectedIcon = Icons.Outlined.Favorite
         ),
 
         BottomNavItem(
-            route = { navHostController.navigate("contactus") },
+            route = {
+                if (sessionManager.fetchAuthToken() != null) {
+                    navHostController.navigate("contactus")
+                } else {
+                    navHostController.navigate("guest")
+                }
+            },
             label = "Kontakt",
             selectedIcon = Icons.Filled.Mail,
             unselectedIcon = Icons.Outlined.Mail
