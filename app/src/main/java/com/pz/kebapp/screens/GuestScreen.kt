@@ -8,15 +8,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Description
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,22 +21,18 @@ import com.pz.kebapp.R
 import com.pz.kebapp.components.ButtonComponent
 import com.pz.kebapp.components.HeadingTextComponent
 import com.pz.kebapp.components.ImageComponent
-import com.pz.kebapp.components.LongTextFieldComponent
-import com.pz.kebapp.functions.userFunctions.sendMessageFunction
 import com.pz.kebapp.navigation.BottomNavigationBar
 import com.pz.kebapp.ui.theme.Background
 
 @Composable
-fun ContactUsScreen(
+fun GuestScreen(
     navController: NavHostController
 ) {
-    val messageState = remember { mutableStateOf("") }
-    val context = LocalContext.current
     val scrollState = rememberScrollState()
 
     Scaffold(
         bottomBar = {
-            BottomNavigationBar(screen = "Kontakt", navController)
+            BottomNavigationBar(screen = "Konto", navController)
         },
         content = { paddingValues ->
             Column(
@@ -62,26 +53,16 @@ fun ContactUsScreen(
                             painterResource = painterResource(id = R.drawable.brodacz)
                         )
 
-                        Spacer(modifier = Modifier.height(20.dp))
+                        Spacer(modifier = Modifier.height(50.dp))
 
-                        HeadingTextComponent(value = "Jakieś sugestie?\nNapisz do nas")
-
-                        Spacer(modifier = Modifier.height(20.dp))
-
-                        LongTextFieldComponent(
-                            labelValue = "Wiadomość",
-                            icon = Icons.Default.Description,
-                            textValue = messageState
+                        HeadingTextComponent(
+                            value = "Funkcja dostępna jest tylko dla zalogowanych użytkowników"
                         )
 
-                        Spacer(modifier = Modifier.height(40.dp))
+                        Spacer(modifier = Modifier.height(80.dp))
 
-                        ButtonComponent(value = "Wyślij", onSelect = {
-                            sendMessageFunction(
-                                messageState.value,
-                                context,
-                                navController
-                            )
+                        ButtonComponent(value = "Zaloguj się", onSelect = {
+                            navController.navigate("login")
                         })
                     }
                 }
@@ -92,6 +73,6 @@ fun ContactUsScreen(
 
 @Preview
 @Composable
-fun ContactUsScreenPreview() {
-    ContactUsScreen(rememberNavController())
+fun GuestScreenPreview() {
+    GuestScreen(rememberNavController())
 }
