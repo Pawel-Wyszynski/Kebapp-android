@@ -11,7 +11,6 @@ import com.pz.kebapp.screens.HomeScreen
 import com.pz.kebapp.screens.ListScreen
 import com.pz.kebapp.screens.auth.LoginScreen
 import com.pz.kebapp.screens.auth.SignUpScreen
-import com.pz.kebapp.viewModel.KebabViewModel
 
 @Composable
 fun Navigation() {
@@ -21,7 +20,7 @@ fun Navigation() {
         composable("login") { LoginScreen(navController) }
         composable("register") { SignUpScreen(navController) }
         composable("home") { HomeScreen(navController) }
-        composable("list") { ListScreen(navController, KebabViewModel()) }
+        composable("list") { ListScreen(navController) }
         composable("favorites") { FavoritesScreen(navController) }
         composable("contactus") { ContactUsScreen(navController) }
         composable("guest") { GuestScreen(navController) }

@@ -12,13 +12,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pz.kebapp.R
@@ -30,16 +28,11 @@ import com.pz.kebapp.viewModel.KebabViewModel
 
 @Composable
 fun ListScreen(
-    navController: NavHostController,
-    viewModel: KebabViewModel
+    navController: NavHostController
 ) {
     val scrollState = rememberScrollState()
-    val context = LocalContext.current
-    val kebabsData = viewModel.kebabsData.collectAsState().value
-
-    LaunchedEffect(key1 = true) {
-        viewModel.getKebabs(context)
-    }
+    val kebabViewModel = viewModel<KebabViewModel>()
+    val state = kebabViewModel.state
 
     Scaffold(
         bottomBar = {
@@ -62,7 +55,7 @@ fun ListScreen(
 
                     HeadingTextComponent(value = "Lista kebabów")
 
-                    Text(text = kebabsData.toString())
+                    Text(text = state.kebabs.toString())
                 }
             }
         }
@@ -72,5 +65,5 @@ fun ListScreen(
 @Preview
 @Composable
 fun ListScreenPreview() {
-    ListScreen(rememberNavController(), KebabViewModel())
+    ListScreen(rememberNavController())
 }
