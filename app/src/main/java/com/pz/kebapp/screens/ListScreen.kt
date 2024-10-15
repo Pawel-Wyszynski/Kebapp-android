@@ -6,11 +6,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -22,6 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import com.pz.kebapp.R
 import com.pz.kebapp.components.HeadingTextComponent
 import com.pz.kebapp.components.ImageComponent
+import com.pz.kebapp.components.KebabItemComponent
 import com.pz.kebapp.navigation.BottomNavigationBar
 import com.pz.kebapp.ui.theme.Background
 import com.pz.kebapp.viewModel.KebabViewModel
@@ -30,7 +31,6 @@ import com.pz.kebapp.viewModel.KebabViewModel
 fun ListScreen(
     navController: NavHostController
 ) {
-    val scrollState = rememberScrollState()
     val kebabViewModel = viewModel<KebabViewModel>()
     val state = kebabViewModel.state
 
@@ -45,17 +45,30 @@ fun ListScreen(
                     .fillMaxSize()
                     .background(Background)
                     .padding(28.dp, 28.dp, 28.dp, paddingValues.calculateBottomPadding())
-                    .verticalScroll(scrollState)
             ) {
-                Column(modifier = Modifier.fillMaxSize()) {
-                    ImageComponent(
-                        painterResource = painterResource(id = R.drawable.brodacz)
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    item {
+                        Column {
+                            ImageComponent(
+                                painterResource = painterResource(id = R.drawable.brodacz)
+                            )
+                            Spacer(modifier = Modifier.height(20.dp))
 
-                    HeadingTextComponent(value = "Lista kebabów")
+                            HeadingTextComponent(value = "Lista kebabów")
+                            Spacer(modifier = Modifier.height(16.dp))
+                        }
+                    }
+                    items(state.kebabs) { kebab ->
+                        KebabItemComponent(kebab = kebab, navController = navController)
 
-                    Text(text = state.kebabs.toString())
+                        Divider(
+                            color = androidx.compose.ui.graphics.Color.LightGray,
+                            thickness = 1.dp,
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        )
+                    }
                 }
             }
         }

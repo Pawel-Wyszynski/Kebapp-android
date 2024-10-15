@@ -1,10 +1,13 @@
 package com.pz.kebapp.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.pz.kebapp.screens.ContactUsScreen
+import com.pz.kebapp.screens.DetailsScreen
 import com.pz.kebapp.screens.FavoritesScreen
 import com.pz.kebapp.screens.GuestScreen
 import com.pz.kebapp.screens.HomeScreen
@@ -24,5 +27,18 @@ fun Navigation() {
         composable("favorites") { FavoritesScreen(navController) }
         composable("contactus") { ContactUsScreen(navController) }
         composable("guest") { GuestScreen(navController) }
+        composable("details/{id}",
+            arguments = listOf(
+                navArgument(
+                    name = "id"
+                ) {
+                    type = NavType.IntType
+                }
+            )
+        ) {
+            it.arguments?.getInt("id")?.let { it1 ->
+                DetailsScreen(id = it1, navController = navController)
+            }
+        }
     }
 }
