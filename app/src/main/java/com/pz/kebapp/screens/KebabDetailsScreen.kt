@@ -18,53 +18,38 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pz.kebapp.R
-import com.pz.kebapp.components.ButtonComponent
 import com.pz.kebapp.components.HeadingTextComponent
 import com.pz.kebapp.components.ImageComponent
 import com.pz.kebapp.navigation.BottomNavigationBar
 import com.pz.kebapp.ui.theme.Background
 
 @Composable
-fun GuestScreen(
+fun KebabDetailsScreen(
+    id: Int,
     navController: NavHostController
 ) {
     val scrollState = rememberScrollState()
 
     Scaffold(
         bottomBar = {
-            BottomNavigationBar(screen = "Konto", navController)
+            BottomNavigationBar(screen = "Kebaby", navController)
         },
         content = { paddingValues ->
-            Column(
+            Surface(
+                color = Background,
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Background)
+                    .padding(28.dp, 28.dp, 28.dp, paddingValues.calculateBottomPadding())
+                    .verticalScroll(scrollState)
             ) {
-                Surface(
-                    color = Background,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Background)
-                        .padding(28.dp, 28.dp, 28.dp, paddingValues.calculateBottomPadding())
-                        .verticalScroll(scrollState)
-                ) {
-                    Column(modifier = Modifier.fillMaxSize()) {
-                        ImageComponent(
-                            painterResource = painterResource(id = R.drawable.brodacz)
-                        )
+                Column(modifier = Modifier.fillMaxSize()) {
+                    ImageComponent(
+                        painterResource = painterResource(id = R.drawable.brodacz)
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
 
-                        Spacer(modifier = Modifier.height(50.dp))
-
-                        HeadingTextComponent(
-                            value = "Funkcja dostępna tylko dla zalogowanych użytkowników"
-                        )
-
-                        Spacer(modifier = Modifier.height(60.dp))
-
-                        ButtonComponent(value = "Zaloguj się", onSelect = {
-                            navController.navigate("login")
-                        })
-                    }
+                    HeadingTextComponent(value = "Kliknąłeś w kebaba o ID: $id")
                 }
             }
         }
@@ -73,6 +58,6 @@ fun GuestScreen(
 
 @Preview
 @Composable
-fun GuestScreenPreview() {
-    GuestScreen(rememberNavController())
+fun DetailsScreenPreview() {
+    KebabDetailsScreen(id = 1, navController = rememberNavController())
 }

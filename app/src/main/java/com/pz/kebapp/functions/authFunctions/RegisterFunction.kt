@@ -23,7 +23,7 @@ fun registerFunction(
     val apiClient = ApiClient()
     val sessionManager = SessionManager(context)
 
-    apiClient.getApiService(context).register(
+    apiClient.getApiService().register(
         RegisterRequest(
             email = email,
             password = password,

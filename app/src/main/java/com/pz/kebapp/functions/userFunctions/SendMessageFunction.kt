@@ -2,9 +2,9 @@ package com.pz.kebapp.functions.userFunctions
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.navigation.NavHostController
 import com.pz.kebapp.data.ApiClient
+import com.pz.kebapp.data.SessionManager
 import com.pz.kebapp.data.models.SendMessageRequest
 import retrofit2.Call
 import retrofit2.Callback
@@ -16,8 +16,10 @@ fun sendMessageFunction(
     navHostController: NavHostController
 ) {
     val apiClient = ApiClient()
+    val sessionManager = SessionManager(context)
 
-    apiClient.getApiService(context).sendMessage(
+    apiClient.getApiService().sendMessage(
+        token = "Bearer ${sessionManager.fetchAuthToken()}",
         SendMessageRequest(
             text = message
         )
@@ -25,7 +27,6 @@ fun sendMessageFunction(
         .enqueue(object : Callback<Unit> {
             override fun onFailure(call: Call<Unit>, t: Throwable) {
                 Log.d("Error", t.message.toString())
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(
@@ -36,7 +37,6 @@ fun sendMessageFunction(
                     navHostController.navigate("contactus")
                 } else {
                     Log.d("Error", "Wysyłka wiadomości nie powiodła się")
-                    Toast.makeText(context, "Błędne dane", Toast.LENGTH_SHORT).show()
                 }
             }
         })

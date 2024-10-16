@@ -23,8 +23,8 @@ fun HeadingTextComponent(value: String) {
             fontSize = 30.sp,
             fontFamily = nunitoSansFontFamily,
             fontWeight = FontWeight.Bold,
-            fontStyle = FontStyle.Normal
-        ),
-        textAlign = TextAlign.Center
+            fontStyle = FontStyle.Normal,
+            textAlign = TextAlign.Center
+        )
     )
 }

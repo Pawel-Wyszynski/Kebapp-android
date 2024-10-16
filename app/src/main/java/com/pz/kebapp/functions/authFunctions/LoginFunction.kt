@@ -21,7 +21,7 @@ fun loginFunction(
     val apiClient = ApiClient()
     val sessionManager = SessionManager(context)
 
-    apiClient.getApiService(context).login(LoginRequest(email = email, password = password))
+    apiClient.getApiService().login(LoginRequest(email = email, password = password))
         .enqueue(object : Callback<LoginResponse> {
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 Log.d("Error", "Błąd logowania")
