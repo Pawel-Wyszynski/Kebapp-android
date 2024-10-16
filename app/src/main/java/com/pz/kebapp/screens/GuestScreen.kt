@@ -45,7 +45,7 @@ fun GuestScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Background)
-                        .padding(28.dp, 15.dp, 28.dp, paddingValues.calculateBottomPadding())
+                        .padding(28.dp, 28.dp, 28.dp, paddingValues.calculateBottomPadding())
                         .verticalScroll(scrollState)
                 ) {
                     Column(modifier = Modifier.fillMaxSize()) {
@@ -56,10 +56,10 @@ fun GuestScreen(
                         Spacer(modifier = Modifier.height(50.dp))
 
                         HeadingTextComponent(
-                            value = "Funkcja dostępna jest tylko dla zalogowanych użytkowników"
+                            value = "Funkcja dostępna tylko dla zalogowanych użytkowników"
                         )
 
-                        Spacer(modifier = Modifier.height(80.dp))
+                        Spacer(modifier = Modifier.height(60.dp))
 
                         ButtonComponent(value = "Zaloguj się", onSelect = {
                             navController.navigate("login")

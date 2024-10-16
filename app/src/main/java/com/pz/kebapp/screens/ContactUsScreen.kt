@@ -54,7 +54,7 @@ fun ContactUsScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Background)
-                        .padding(28.dp, 15.dp, 28.dp, paddingValues.calculateBottomPadding())
+                        .padding(28.dp, 28.dp, 28.dp, paddingValues.calculateBottomPadding())
                         .verticalScroll(scrollState)
                 ) {
                     Column(modifier = Modifier.fillMaxSize()) {

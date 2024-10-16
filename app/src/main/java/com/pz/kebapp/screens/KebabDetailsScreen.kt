@@ -24,9 +24,9 @@ import com.pz.kebapp.navigation.BottomNavigationBar
 import com.pz.kebapp.ui.theme.Background
 
 @Composable
-fun DetailsScreen(
+fun KebabDetailsScreen(
     id: Int,
-    navController: NavHostController // Dodaj navController, jeśli planujesz używać go do nawigacji
+    navController: NavHostController
 ) {
     val scrollState = rememberScrollState()
 
@@ -48,7 +48,7 @@ fun DetailsScreen(
                         painterResource = painterResource(id = R.drawable.brodacz)
                     )
                     Spacer(modifier = Modifier.height(20.dp))
-                    // Wyświetl id kebaba
+
                     HeadingTextComponent(value = "Kliknąłeś w kebaba o ID: $id")
                 }
             }
@@ -59,5 +59,5 @@ fun DetailsScreen(
 @Preview
 @Composable
 fun DetailsScreenPreview() {
-    DetailsScreen(id = 1, navController = rememberNavController())
+    KebabDetailsScreen(id = 1, navController = rememberNavController())
 }

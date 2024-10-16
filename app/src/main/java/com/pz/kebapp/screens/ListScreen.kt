@@ -8,7 +8,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Divider
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -56,18 +57,18 @@ fun ListScreen(
                             )
                             Spacer(modifier = Modifier.height(20.dp))
 
-                            HeadingTextComponent(value = "Lista kebabów")
+                            HeadingTextComponent(value = "Lista restauracji z kebabami")
+
                             Spacer(modifier = Modifier.height(16.dp))
                         }
                     }
                     items(state.kebabs) { kebab ->
-                        KebabItemComponent(kebab = kebab, navController = navController)
-
-                        Divider(
-                            color = androidx.compose.ui.graphics.Color.LightGray,
-                            thickness = 1.dp,
-                            modifier = Modifier.padding(vertical = 8.dp)
-                        )
+                        KebabItemComponent(
+                            kebab = kebab,
+                            icon = Icons.AutoMirrored.Filled.ArrowForwardIos,
+                            onSelect = {
+                                navController.navigate("details/${kebab.id}")
+                            })
                     }
                 }
             }

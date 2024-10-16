@@ -7,10 +7,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.pz.kebapp.screens.ContactUsScreen
-import com.pz.kebapp.screens.DetailsScreen
 import com.pz.kebapp.screens.FavoritesScreen
 import com.pz.kebapp.screens.GuestScreen
 import com.pz.kebapp.screens.HomeScreen
+import com.pz.kebapp.screens.KebabDetailsScreen
 import com.pz.kebapp.screens.ListScreen
 import com.pz.kebapp.screens.auth.LoginScreen
 import com.pz.kebapp.screens.auth.SignUpScreen
@@ -36,8 +36,8 @@ fun Navigation() {
                 }
             )
         ) {
-            it.arguments?.getInt("id")?.let { it1 ->
-                DetailsScreen(id = it1, navController = navController)
+            it.arguments?.getInt("id")?.let { id ->
+                KebabDetailsScreen(id = id, navController = navController)
             }
         }
     }

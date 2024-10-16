@@ -24,8 +24,8 @@ fun NormalTextComponent(value: String) {
             fontSize = 18.sp,
             fontFamily = nunitoSansFontFamily,
             fontWeight = FontWeight.Normal,
-            fontStyle = FontStyle.Normal
-        ),
-        textAlign = TextAlign.Justify
+            fontStyle = FontStyle.Normal,
+            textAlign = TextAlign.Justify
+        )
     )
 }
