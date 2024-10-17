@@ -1,6 +1,7 @@
 package com.pz.kebapp.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,9 +11,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,6 +41,9 @@ fun ListScreen(
 ) {
     val kebabViewModel = viewModel<KebabViewModel>()
     val state = kebabViewModel.state
+    var isListLoaded by remember {
+        mutableStateOf(state.kebabs.isNotEmpty())
+    }
 
     Scaffold(
         bottomBar = {
@@ -47,33 +57,50 @@ fun ListScreen(
                     .background(Background)
                     .padding(28.dp, 28.dp, 28.dp, paddingValues.calculateBottomPadding())
             ) {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize()
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
                 ) {
-                    item {
-                        Column {
-                            ImageComponent(
-                                painterResource = painterResource(id = R.drawable.brodacz)
-                            )
-                            Spacer(modifier = Modifier.height(20.dp))
+                    if (!isListLoaded) {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                        )
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            item {
+                                Column {
+                                    ImageComponent(
+                                        painterResource = painterResource(id = R.drawable.brodacz)
+                                    )
+                                    Spacer(modifier = Modifier.height(20.dp))
 
-                            HeadingTextComponent(value = "Lista restauracji z kebabami")
+                                    HeadingTextComponent(value = "Lista restauracji z kebabami")
 
-                            Spacer(modifier = Modifier.height(16.dp))
+                                    Spacer(modifier = Modifier.height(16.dp))
+                                }
+                            }
+                            items(state.kebabs) { kebab ->
+                                KebabItemComponent(
+                                    kebab = kebab,
+                                    icon = Icons.AutoMirrored.Filled.ArrowForwardIos,
+                                    onSelect = {
+                                        navController.navigate("details/${kebab.id}")
+                                    }
+                                )
+                            }
                         }
-                    }
-                    items(state.kebabs) { kebab ->
-                        KebabItemComponent(
-                            kebab = kebab,
-                            icon = Icons.AutoMirrored.Filled.ArrowForwardIos,
-                            onSelect = {
-                                navController.navigate("details/${kebab.id}")
-                            })
                     }
                 }
             }
         }
     )
+
+    if (state.kebabs.isNotEmpty() && !isListLoaded) {
+        isListLoaded = true
+    }
 }
 
 @Preview
