@@ -38,9 +38,9 @@ import com.pz.kebapp.ui.theme.Background
 fun HomeScreen(
     navController: NavHostController
 ) {
-    val legnicaState = LatLng(51.2070, 16.1553)
+    val legnicaState = LatLng(51.2070, 16.1753)
 
-    val defaultCameraPosition = CameraPosition.fromLatLngZoom(legnicaState, 4f)
+    val defaultCameraPosition = CameraPosition.fromLatLngZoom(legnicaState, 12f)
 
     val locationState = rememberMarkerState(
         position = legnicaState
