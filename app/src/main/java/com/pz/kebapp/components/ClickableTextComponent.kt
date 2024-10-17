@@ -1,8 +1,11 @@
 package com.pz.kebapp.components
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
@@ -24,28 +27,54 @@ fun ClickableTextComponent(
     onTextSelected: (String) -> Unit
 ) {
     val annotatedString = buildAnnotatedString {
-        append(valueInitial)
+        pushStringAnnotation(
+            tag = "ANNOTATION",
+            annotation = valueAnnotated
+        )
         withStyle(style = SpanStyle(color = TextFieldPrimaryColor)) {
-            pushStringAnnotation(tag = valueAnnotated, annotation = valueAnnotated)
             append(valueAnnotated)
         }
+        pop()
     }
-    ClickableText(modifier = Modifier
-        .fillMaxWidth()
-        .heightIn(min = 40.dp),
-        style = TextStyle(
-            fontSize = 18.sp,
-            fontFamily = nunitoSansFontFamily,
-            fontWeight = FontWeight.Normal,
-            fontStyle = FontStyle.Normal,
-            textAlign = TextAlign.Center
-        ),
-        text = annotatedString, onClick = { offset ->
-            annotatedString.getStringAnnotations(offset, offset)
-                .firstOrNull()?.also { span ->
-                    if (span.item == valueAnnotated) {
-                        onTextSelected(span.item)
-                    }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 40.dp),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = valueInitial,
+            style = TextStyle(
+                fontSize = 18.sp,
+                fontFamily = nunitoSansFontFamily,
+                fontWeight = FontWeight.Normal,
+                fontStyle = FontStyle.Normal,
+                textAlign = TextAlign.Center
+            )
+        )
+        Text(
+            text = annotatedString,
+            style = TextStyle(
+                fontSize = 18.sp,
+                fontFamily = nunitoSansFontFamily,
+                fontWeight = FontWeight.Normal,
+                fontStyle = FontStyle.Normal,
+                textAlign = TextAlign.Center
+            ),
+            modifier = Modifier
+                .clickable {
+                    annotatedString
+                        .getStringAnnotations(
+                            tag = "ANNOTATION",
+                            start = 0,
+                            end = annotatedString.length
+                        )
+                        .firstOrNull()
+                        ?.let { annotation ->
+                            onTextSelected(annotation.item)
+                        }
                 }
-        })
+        )
+    }
 }

@@ -47,6 +47,7 @@ fun FavoritesScreen(
                         painterResource = painterResource(id = R.drawable.brodacz)
                     )
                     Spacer(modifier = Modifier.height(20.dp))
+
                     HeadingTextComponent(value = "Ulubione kebaby")
                 }
             }
