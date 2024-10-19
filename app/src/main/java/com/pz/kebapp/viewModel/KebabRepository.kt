@@ -5,9 +5,9 @@ import com.pz.kebapp.data.models.KebabsList
 import retrofit2.Response
 
 class KebabRepository {
-    suspend fun getKebabsList(): Response<KebabsList> {
+    suspend fun getKebabsList(page: Int): Response<KebabsList> {
         val apiClient = ApiClient()
 
-        return apiClient.getApiService().getAllKebabs()
+        return apiClient.getApiService().getKebabs(page)
     }
 }

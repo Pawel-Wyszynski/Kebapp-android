@@ -1,5 +1,6 @@
 package com.pz.kebapp.screens
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -40,13 +41,15 @@ import com.pz.kebapp.navigation.BottomNavigationBar
 import com.pz.kebapp.ui.theme.Background
 import kotlinx.coroutines.launch
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun HomeScreen(
     navController: NavHostController
 ) {
     val legnicaState = LatLng(51.2070, 16.1753)
-
     val defaultCameraPosition = CameraPosition.fromLatLngZoom(legnicaState, 12f)
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     val locationState = rememberMarkerState(
         position = legnicaState
@@ -71,9 +74,6 @@ fun HomeScreen(
     var showInfoWindow by remember {
         mutableStateOf(true)
     }
-
-    val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
 
     coroutineScope.launch {
         val mapStyleOptions = loadMapStyle(context)
@@ -138,8 +138,7 @@ fun HomeScreen(
 }
 
 private fun loadMapStyle(context: Context): MapStyleOptions {
-    val style = MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style)
-    return style
+    return MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style)
 }
 
 @Preview

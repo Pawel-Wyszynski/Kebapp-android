@@ -19,13 +19,13 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.pz.kebapp.data.models.KebabsListItem
+import com.pz.kebapp.data.models.Data
 import com.pz.kebapp.ui.theme.Gray
 import com.pz.kebapp.ui.theme.nunitoSansFontFamily
 
 @Composable
 fun KebabItemComponent(
-    kebab: KebabsListItem,
+    kebab: Data,
     icon: ImageVector,
     onSelect: () -> Unit
 ) {
