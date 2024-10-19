@@ -1,3 +1,7 @@
 package com.pz.kebapp.data.models
 
-class KebabsList : ArrayList<KebabsListItem>()
+data class KebabsList(
+    val data: List<Data>,
+    val links: Links,
+    val meta: Meta
+)
