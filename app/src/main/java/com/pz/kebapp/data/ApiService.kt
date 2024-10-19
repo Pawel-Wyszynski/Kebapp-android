@@ -11,6 +11,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface ApiService {
     @POST("login")
@@ -25,8 +26,10 @@ interface ApiService {
         @Body request: SendMessageRequest
     ): Call<Unit>
 
-    @GET("kebabs")
-    suspend fun getAllKebabs(): Response<KebabsList>
+    @GET("kebabs/paginated?")
+    suspend fun getKebabs(
+        @Query("page") page: Int
+    ): Response<KebabsList>
 
     companion object {
         const val BASE_URL = "https://kebapp.wheelwallet.cloud/api/"

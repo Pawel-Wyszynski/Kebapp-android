@@ -1,6 +1,6 @@
 package com.pz.kebapp.data.models
 
-data class KebabsListItem(
+data class Data(
     val id: Int,
     val name: String,
     val logoUrl: String,
