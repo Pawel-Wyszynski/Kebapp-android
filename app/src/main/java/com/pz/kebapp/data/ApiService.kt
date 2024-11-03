@@ -1,5 +1,6 @@
 package com.pz.kebapp.data
 
+import com.pz.kebapp.data.models.Data
 import com.pz.kebapp.data.models.KebabsList
 import com.pz.kebapp.data.models.LoginRequest
 import com.pz.kebapp.data.models.LoginResponse
@@ -25,6 +26,9 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body request: SendMessageRequest
     ): Call<Unit>
+
+    @GET("kebabs")
+    suspend fun getAllKebabs(): Response<List<Data>>
 
     @GET("kebabs/paginated?")
     suspend fun getKebabs(
