@@ -24,8 +24,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -39,6 +41,7 @@ import com.google.maps.android.compose.rememberMarkerState
 import com.pz.kebapp.R
 import com.pz.kebapp.navigation.BottomNavigationBar
 import com.pz.kebapp.ui.theme.Background
+import com.pz.kebapp.viewModel.WaypointsViewModel
 import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -46,14 +49,14 @@ import kotlinx.coroutines.launch
 fun HomeScreen(
     navController: NavHostController
 ) {
+    val waypointsViewModel = viewModel<WaypointsViewModel>()
+    val state = waypointsViewModel.state
+
     val legnicaState = LatLng(51.2070, 16.1753)
     val defaultCameraPosition = CameraPosition.fromLatLngZoom(legnicaState, 12f)
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
-    val locationState = rememberMarkerState(
-        position = legnicaState
-    )
 
     val mapUiSettings by remember {
         mutableStateOf(MapUiSettings(compassEnabled = false))
@@ -103,24 +106,32 @@ fun HomeScreen(
                     uiSettings = mapUiSettings,
                     properties = mapProperties
                 ) {
-                    MarkerInfoWindowContent(
-                        state = locationState,
-                        draggable = true,
-                        onClick = {
-                            if (showInfoWindow) {
-                                locationState.showInfoWindow()
-                            } else {
-                                locationState.hideInfoWindow()
+                    state.kebabs.forEach { data ->
+                        val locationState = rememberMarkerState(
+                            position = LatLng(data.coordinatesX, data.coordinatesY)
+                        )
+
+                        val iconResource = getMarkerIcon(data.status)
+                        val icon = BitmapDescriptorFactory.fromResource(iconResource)
+
+                        MarkerInfoWindowContent(
+                            state = locationState,
+                            icon = icon,
+                            draggable = true,
+                            onClick = {
+                                if (showInfoWindow) {
+                                    locationState.showInfoWindow()
+                                } else {
+                                    locationState.hideInfoWindow()
+                                }
+                                showInfoWindow = !showInfoWindow
+                                return@MarkerInfoWindowContent false
+                            },
+                            title = "Legnica Map Title"
+                        ) {
+                            Column {
+                                Text(text = data.name)
                             }
-                            showInfoWindow = !showInfoWindow
-                            return@MarkerInfoWindowContent false
-                        },
-                        title = "Legnica Map Title"
-                    ) {
-                        Column {
-                            Text(text = "ZAHIR")
-                            Text(text = "KEBAB")
-                            Text(text = "LEGNICA")
                         }
                     }
                 }
@@ -139,6 +150,13 @@ fun HomeScreen(
 
 private fun loadMapStyle(context: Context): MapStyleOptions {
     return MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style)
+}
+
+private fun getMarkerIcon(status: String): Int {
+    return when (status) {
+        "active" -> R.drawable.kebab48x48
+        else -> R.drawable.kebab24x24_inactive
+    }
 }
 
 @Preview
