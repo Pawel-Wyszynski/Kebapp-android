@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -109,8 +110,13 @@ fun HomeScreen(
                         val locationState = rememberMarkerState(
                             position = LatLng(data.coordinatesX, data.coordinatesY)
                         )
+
+                        val iconResource = getMarkerIcon(data.status)
+                        val icon = BitmapDescriptorFactory.fromResource(iconResource)
+
                         MarkerInfoWindowContent(
                             state = locationState,
+                            icon = icon,
                             draggable = true,
                             onClick = {
                                 if (showInfoWindow) {
@@ -144,6 +150,13 @@ fun HomeScreen(
 
 private fun loadMapStyle(context: Context): MapStyleOptions {
     return MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style)
+}
+
+private fun getMarkerIcon(status: String): Int {
+    return when (status) {
+        "active" -> R.drawable.kebab48x48
+        else -> R.drawable.kebab24x24_inactive
+    }
 }
 
 @Preview
