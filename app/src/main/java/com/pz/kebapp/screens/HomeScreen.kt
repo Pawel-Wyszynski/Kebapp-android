@@ -20,11 +20,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -41,7 +39,7 @@ import com.pz.kebapp.components.MarkerInfoWindowComponent
 import com.pz.kebapp.data.models.Data
 import com.pz.kebapp.navigation.BottomNavigationBar
 import com.pz.kebapp.ui.theme.Background
-import com.pz.kebapp.viewModel.WaypointsViewModel
+import com.pz.kebapp.viewModel.DetailsViewModel
 import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -49,7 +47,7 @@ import kotlinx.coroutines.launch
 fun HomeScreen(
     navController: NavHostController
 ) {
-    val waypointsViewModel = viewModel<WaypointsViewModel>()
+    val waypointsViewModel = viewModel<DetailsViewModel>()
     val state = waypointsViewModel.state
 
     val legnicaState = LatLng(51.2070, 16.1753)
@@ -57,22 +55,13 @@ fun HomeScreen(
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
+    val mapUiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
 
-    val mapUiSettings by remember {
-        mutableStateOf(MapUiSettings(compassEnabled = false))
-    }
+    var mapProperties by remember { mutableStateOf(MapProperties(mapType = MapType.NORMAL)) }
 
-    var mapProperties by remember {
-        mutableStateOf(MapProperties(mapType = MapType.NORMAL))
-    }
+    val cameraPositionState = rememberCameraPositionState { position = defaultCameraPosition }
 
-    val cameraPositionState = rememberCameraPositionState {
-        position = defaultCameraPosition
-    }
-
-    var isMapLoaded by remember {
-        mutableStateOf(false)
-    }
+    var isMapLoaded by remember { mutableStateOf(false) }
 
     var selectedKebab by remember { mutableStateOf<Data?>(null) }
 
@@ -128,7 +117,7 @@ fun HomeScreen(
                                 }
                             }
                         ) {
-                            MarkerInfoWindowComponent(data = data, navController = navController)
+                            MarkerInfoWindowComponent(data = data)
                         }
                     }
                 }
@@ -154,10 +143,4 @@ private fun getMarkerIcon(status: String): Int {
         "active" -> R.drawable.kebab48x48
         else -> R.drawable.kebab24x24_inactive
     }
-}
-
-@Preview
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen(rememberNavController())
 }

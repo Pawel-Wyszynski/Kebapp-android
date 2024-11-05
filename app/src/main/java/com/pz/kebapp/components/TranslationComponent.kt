@@ -16,7 +16,6 @@ fun translatedDay(status: String): String {
     }
 }
 
-
 @Composable
 fun translatedStatus(status: String): String {
     return when (status) {

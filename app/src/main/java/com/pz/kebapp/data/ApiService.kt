@@ -6,6 +6,7 @@ import com.pz.kebapp.data.models.LoginRequest
 import com.pz.kebapp.data.models.LoginResponse
 import com.pz.kebapp.data.models.RegisterRequest
 import com.pz.kebapp.data.models.SendMessageRequest
+import com.pz.kebapp.data.models.User
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -20,6 +21,11 @@ interface ApiService {
 
     @POST("register")
     fun register(@Body request: RegisterRequest): Call<LoginResponse>
+
+    @GET("me")
+    suspend fun getUser(
+        @Header("Authorization") token: String
+    ): Response<User>
 
     @POST("admin-messages")
     fun sendMessage(
