@@ -8,9 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.pz.kebapp.data.models.Data
 import kotlinx.coroutines.launch
 
-class WaypointsViewModel : ViewModel() {
+class DetailsViewModel : ViewModel() {
     private val kebabRepository = KebabRepository()
-    var state by mutableStateOf(WaypointsState())
+    var state by mutableStateOf(DetailsState())
 
     init {
         viewModelScope.launch {
@@ -22,6 +22,6 @@ class WaypointsViewModel : ViewModel() {
     }
 }
 
-data class WaypointsState(
+data class DetailsState(
     val kebabs: List<Data> = emptyList()
 )

@@ -14,6 +14,7 @@ class KebabRepository {
 
     suspend fun getAllKebabsList(): Response<List<Data>> {
         val apiClient = ApiClient()
+
         return apiClient.getApiService().getAllKebabs()
     }
 }

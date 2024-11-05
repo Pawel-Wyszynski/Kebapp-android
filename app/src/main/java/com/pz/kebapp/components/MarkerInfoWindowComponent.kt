@@ -13,17 +13,13 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.pz.kebapp.data.models.Data
 import com.pz.kebapp.ui.theme.nunitoSansFontFamily
 
 @Composable
-fun MarkerInfoWindowComponent(
-    data: Data,
-    navController: NavHostController
-) {
-
+fun MarkerInfoWindowComponent(data: Data) {
     val translatedStatus = translatedStatus(data.status)
+
     Column(
         modifier = Modifier
             .wrapContentSize()
@@ -85,11 +81,15 @@ fun MarkerInfoWindowComponent(
                 )
             )
         }
-        ClickableTextComponent(
-            valueInitial = "",
-            valueAnnotated = "Więcej informacji",
-            onTextSelected = {
-                navController.navigate("details/${data.id}")
-            })
+        Text(
+            text = "Kliknij by zobaczyć więcej informacji",
+            style = TextStyle(
+                fontSize = 14.sp,
+                fontFamily = nunitoSansFontFamily,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+            ),
+            modifier = Modifier.padding(top = 4.dp)
+        )
     }
 }
