@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +37,8 @@ import com.google.maps.android.compose.MarkerInfoWindowContent
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import com.pz.kebapp.R
+import com.pz.kebapp.components.MarkerInfoWindowComponent
+import com.pz.kebapp.data.models.Data
 import com.pz.kebapp.navigation.BottomNavigationBar
 import com.pz.kebapp.ui.theme.Background
 import com.pz.kebapp.viewModel.WaypointsViewModel
@@ -74,9 +74,7 @@ fun HomeScreen(
         mutableStateOf(false)
     }
 
-    var showInfoWindow by remember {
-        mutableStateOf(true)
-    }
+    var selectedKebab by remember { mutableStateOf<Data?>(null) }
 
     coroutineScope.launch {
         val mapStyleOptions = loadMapStyle(context)
@@ -117,21 +115,20 @@ fun HomeScreen(
                         MarkerInfoWindowContent(
                             state = locationState,
                             icon = icon,
-                            draggable = true,
+                            draggable = false,
                             onClick = {
-                                if (showInfoWindow) {
-                                    locationState.showInfoWindow()
-                                } else {
-                                    locationState.hideInfoWindow()
-                                }
-                                showInfoWindow = !showInfoWindow
-                                return@MarkerInfoWindowContent false
+                                selectedKebab = data
+                                locationState.showInfoWindow()
+                                return@MarkerInfoWindowContent true
                             },
-                            title = "Legnica Map Title"
-                        ) {
-                            Column {
-                                Text(text = data.name)
+                            onInfoWindowClick = {
+                                if (selectedKebab != null) {
+                                    navController.navigate("details/${selectedKebab!!.id}")
+                                    selectedKebab = null
+                                }
                             }
+                        ) {
+                            MarkerInfoWindowComponent(data = data, navController = navController)
                         }
                     }
                 }

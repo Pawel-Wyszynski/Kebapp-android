@@ -90,13 +90,3 @@ fun KebabItemComponent(
         )
     }
 }
-
-@Composable
-fun translatedStatus(status: String): String {
-    return when (status) {
-        "active" -> "Aktywny"
-        "inactive" -> "Nieaktywny"
-        "planned" -> "Planowany"
-        else -> "Nieznany"
-    }
-}
