@@ -19,7 +19,10 @@ data class Data(
     val hasPyszne: Boolean,
     val hasUberEats: Boolean,
     val phoneNumber: String,
+    val likeCount: Int,
+    val isOpenNow: Boolean,
     val meatTypes: List<MeatType>,
     val sauces: List<Sauce>,
-    val openingHours: List<OpeningHour>
+    val openingHours: List<OpeningHour>,
+    val comments: List<String>
 )
