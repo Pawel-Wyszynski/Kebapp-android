@@ -22,7 +22,6 @@ import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.Event
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Phone
@@ -35,7 +34,6 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -157,16 +155,12 @@ fun KebabDetailsComponent(id: Int, viewModel: DetailsViewModel, paddingValues: P
                         KebabInfo(Icons.Default.Store, "Sieciówka:", it.network ?: "Brak danych")
                         KebabInfo(Icons.Default.Phone, "Telefon:", it.phoneNumber ?: "Brak danych")
 
-                        Spacer(modifier = Modifier.height(16.dp))
-
                         Text(
                             text = "Dostępne mięsa",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
                         )
                         MeatTypeCheckboxes(it.meatTypes)
-
-                        Spacer(modifier = Modifier.height(16.dp))
 
                         Text(
                             text = "Dostępne sosy",
@@ -346,15 +340,6 @@ fun MiddleBar(kebab: Data?) {
             Text(
                 text = "Zamknięte",
                 color = Color.Red
-            )
-        }
-
-        Spacer(modifier = Modifier.width(20.dp))
-        IconButton(onClick = { }) {
-            Icon(
-                imageVector = Icons.Default.Favorite,
-                contentDescription = "Ulubione",
-                tint = Color.Red
             )
         }
     }
