@@ -47,8 +47,8 @@ import kotlinx.coroutines.launch
 fun HomeScreen(
     navController: NavHostController
 ) {
-    val waypointsViewModel = viewModel<DetailsViewModel>()
-    val state = waypointsViewModel.state
+    val detailsViewModel = viewModel<DetailsViewModel>()
+    val state = detailsViewModel.state
 
     val legnicaState = LatLng(51.2070, 16.1753)
     val defaultCameraPosition = CameraPosition.fromLatLngZoom(legnicaState, 12f)

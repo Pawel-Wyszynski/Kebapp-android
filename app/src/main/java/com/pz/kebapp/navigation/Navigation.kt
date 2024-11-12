@@ -1,6 +1,7 @@
 package com.pz.kebapp.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -14,6 +15,7 @@ import com.pz.kebapp.screens.KebabDetailsScreen
 import com.pz.kebapp.screens.ListScreen
 import com.pz.kebapp.screens.auth.LoginScreen
 import com.pz.kebapp.screens.auth.SignUpScreen
+import com.pz.kebapp.viewModel.DetailsViewModel
 
 @Composable
 fun Navigation() {
@@ -36,8 +38,9 @@ fun Navigation() {
                 }
             )
         ) {
+            val viewModel: DetailsViewModel = viewModel()
             it.arguments?.getInt("id")?.let { id ->
-                KebabDetailsScreen(id = id, navController = navController)
+                KebabDetailsScreen(id = id, navController = navController, viewModel = viewModel)
             }
         }
     }
