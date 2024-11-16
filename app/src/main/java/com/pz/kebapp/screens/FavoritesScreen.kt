@@ -23,10 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.pz.kebapp.R
 import com.pz.kebapp.components.HeadingTextComponent
 import com.pz.kebapp.components.ImageComponent
@@ -101,10 +99,4 @@ fun FavoritesScreen(
     if (state.user.isNotEmpty() && !isListLoaded) {
         isListLoaded = true
     }
-}
-
-@Preview
-@Composable
-fun FavoritesScreenPreview() {
-    FavoritesScreen(rememberNavController())
 }

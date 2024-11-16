@@ -27,20 +27,13 @@ fun translatedStatus(status: String): String {
 }
 
 @Composable
-fun translatedMeatType(meat: String): String {
-    return when (meat) {
+fun translatedType(type: String): String {
+    return when (type) {
         "Chicken" -> "Kurczak"
         "Beef" -> "Wołowina"
         "Lamb" -> "Jagnięcina"
         "Pork" -> "Wieprzowina"
         "Falafel" -> "Falafel"
-        else -> "Nieznany"
-    }
-}
-
-@Composable
-fun translatedSauceType(sauce: String): String {
-    return when (sauce) {
         "Mild" -> "Łagodny"
         "Garlic" -> "Czosnkowy"
         "Spicy" -> "Pikantny"
