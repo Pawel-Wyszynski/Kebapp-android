@@ -23,10 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.pz.kebapp.R
 import com.pz.kebapp.components.HeadingTextComponent
 import com.pz.kebapp.components.ImageComponent
@@ -44,7 +42,7 @@ fun FavoritesScreen(
     val state = userViewModel.state
 
     var isListLoaded by remember {
-        mutableStateOf(state.user.isNotEmpty())
+        mutableStateOf(state.likedKebabs.isNotEmpty())
     }
 
     Scaffold(
@@ -83,7 +81,7 @@ fun FavoritesScreen(
                                     Spacer(modifier = Modifier.height(16.dp))
                                 }
                             }
-                            items(state.user) { kebab ->
+                            items(state.likedKebabs) { kebab ->
                                 KebabItemComponent(
                                     kebab = kebab,
                                     icon = Icons.AutoMirrored.Filled.ArrowForwardIos,
@@ -98,13 +96,7 @@ fun FavoritesScreen(
             }
         }
     )
-    if (state.user.isNotEmpty() && !isListLoaded) {
+    if (state.likedKebabs.isNotEmpty() && !isListLoaded) {
         isListLoaded = true
     }
-}
-
-@Preview
-@Composable
-fun FavoritesScreenPreview() {
-    FavoritesScreen(rememberNavController())
 }

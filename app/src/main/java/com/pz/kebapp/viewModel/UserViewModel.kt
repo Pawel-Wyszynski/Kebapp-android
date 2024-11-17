@@ -18,7 +18,8 @@ class UserViewModel(context: Context) : ViewModel() {
             val response = userRepository.getFavoritesKebabsList()
             response.body()?.let { user ->
                 state = state.copy(
-                    user = user.likedKebabs
+                    id = user.id,
+                    likedKebabs = user.likedKebabs
                 )
             }
         }
@@ -26,5 +27,6 @@ class UserViewModel(context: Context) : ViewModel() {
 }
 
 data class UserState(
-    val user: List<Data> = emptyList()
+    val id: Int = 0,
+    val likedKebabs: List<Data> = emptyList()
 )

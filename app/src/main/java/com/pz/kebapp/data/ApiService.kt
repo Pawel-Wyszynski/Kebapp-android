@@ -10,9 +10,11 @@ import com.pz.kebapp.data.models.User
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
@@ -33,6 +35,25 @@ interface ApiService {
         @Body request: SendMessageRequest
     ): Call<Unit>
 
+    @POST("like/kebab/{id}")
+    fun likeKebab(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): Call<Unit>
+
+    @POST("comment/kebab/{id}")
+    fun comment(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int,
+        @Body request: SendMessageRequest
+    ): Call<Unit>
+
+    @DELETE("comment/{id}")
+    fun deleteComment(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): Call<Unit>
+
     @GET("kebabs")
     suspend fun getAllKebabs(): Response<List<Data>>
 
@@ -42,6 +63,6 @@ interface ApiService {
     ): Response<KebabsList>
 
     companion object {
-        const val BASE_URL = "https://kebapp.wheelwallet.cloud/api/"
+        const val BASE_URL = "https://kebapp.bity24h.pl/api/"
     }
 }
