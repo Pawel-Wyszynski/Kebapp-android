@@ -26,5 +26,5 @@ data class Data(
     val meatTypes: List<MeatType>,
     val sauces: List<Sauce>,
     val openingHours: List<OpeningHour>,
-    val comments: List<String>,
+    val comments: List<Comment>
 )

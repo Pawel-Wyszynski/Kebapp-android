@@ -14,8 +14,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Comment
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.Event
@@ -63,6 +65,8 @@ import com.pz.kebapp.components.translatedType
 import com.pz.kebapp.data.models.Data
 import com.pz.kebapp.data.models.MeatType
 import com.pz.kebapp.data.models.Sauce
+import com.pz.kebapp.functions.userFunctions.commentKebabFunction
+import com.pz.kebapp.functions.userFunctions.deleteCommentFunction
 import com.pz.kebapp.functions.userFunctions.likeKebabFunction
 import com.pz.kebapp.navigation.BottomNavigationBar
 import com.pz.kebapp.ui.theme.Background
@@ -79,9 +83,11 @@ fun KebabDetailsScreen(
 ) {
     val kebabsList = viewModel.state.kebabs
     val kebab = viewModel.selectedKebab
-    val messageState = remember { mutableStateOf("") }
+    val commentState = remember { mutableStateOf("") }
     val state = viewModel.state
     val context = LocalContext.current
+    val userViewModel = remember { UserViewModel(context) }
+    val userState = userViewModel.state
 
     Scaffold(
         bottomBar = {
@@ -260,10 +266,63 @@ fun KebabDetailsScreen(
                                     LongTextFieldComponent(
                                         labelValue = "Komentarz",
                                         icon = Icons.Default.Description,
-                                        textValue = messageState
+                                        textValue = commentState
                                     )
 
-                                    ButtonComponent(value = "Wyślij", onSelect = {})
+                                    ButtonComponent(value = "Potwierdź", onSelect = {
+                                        commentKebabFunction(
+                                            id,
+                                            commentState.value,
+                                            context,
+                                            navController
+                                        )
+                                    })
+
+                                    it.comments.forEach { comment ->
+                                        Row(
+                                            modifier = Modifier.padding(vertical = 8.dp),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.Start
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.AutoMirrored.Filled.Comment,
+                                                contentDescription = null,
+                                                tint = Color.Black
+                                            )
+                                            Spacer(modifier = Modifier.width(10.dp))
+                                            Text(
+                                                text = comment.authorName,
+                                                fontSize = 18.sp,
+                                                fontWeight = FontWeight.Bold,
+                                                fontFamily = nunitoSansFontFamily
+                                            )
+                                            Spacer(modifier = Modifier.weight(1f))
+                                            if (comment.authorId == userState.id) {
+                                                IconButton(onClick = {
+                                                    deleteCommentFunction(
+                                                        id,
+                                                        comment.id,
+                                                        context,
+                                                        navController
+                                                    )
+                                                }) {
+                                                    Icon(
+                                                        imageVector = Icons.Default.Delete,
+                                                        contentDescription = null,
+                                                        tint = Color.Red
+                                                    )
+                                                }
+                                            }
+                                        }
+                                        Text(text = comment.text, fontSize = 18.sp)
+                                        Divider(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(vertical = 8.dp),
+                                            color = Gray,
+                                            thickness = 1.dp
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -345,7 +404,7 @@ fun MiddleBar(kebab: Data?, context: Context, navController: NavHostController) 
     val userViewModel = remember { UserViewModel(context) }
     val state = userViewModel.state
 
-    val isLiked = state.user.any { likedKebab ->
+    val isLiked = state.likedKebabs.any { likedKebab ->
         likedKebab.id == kebab?.id
     }
 

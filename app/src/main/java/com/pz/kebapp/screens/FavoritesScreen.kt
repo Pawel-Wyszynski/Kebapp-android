@@ -42,7 +42,7 @@ fun FavoritesScreen(
     val state = userViewModel.state
 
     var isListLoaded by remember {
-        mutableStateOf(state.user.isNotEmpty())
+        mutableStateOf(state.likedKebabs.isNotEmpty())
     }
 
     Scaffold(
@@ -81,7 +81,7 @@ fun FavoritesScreen(
                                     Spacer(modifier = Modifier.height(16.dp))
                                 }
                             }
-                            items(state.user) { kebab ->
+                            items(state.likedKebabs) { kebab ->
                                 KebabItemComponent(
                                     kebab = kebab,
                                     icon = Icons.AutoMirrored.Filled.ArrowForwardIos,
@@ -96,7 +96,7 @@ fun FavoritesScreen(
             }
         }
     )
-    if (state.user.isNotEmpty() && !isListLoaded) {
+    if (state.likedKebabs.isNotEmpty() && !isListLoaded) {
         isListLoaded = true
     }
 }
