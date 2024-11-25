@@ -8,14 +8,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDownward
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -32,7 +39,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pz.kebapp.ui.theme.nunitoSansFontFamily
+import com.pz.kebapp.viewModel.KebabViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 data class FilterItem(
     val key: String,
@@ -50,9 +59,12 @@ fun DrawerMenu(
     filters: List<FilterItem>,
     meatFilterState: MutableList<Boolean>,
     sauceFilterState: MutableList<Boolean>,
+    statusFilterState: MutableList<Boolean>,
     selectedSort: MutableState<String?>,
+    isAscending: MutableState<Boolean>,
     coroutineScope: CoroutineScope,
-    drawerState: DrawerState
+    drawerState: DrawerState,
+    kebabViewModel: KebabViewModel
 ) {
     ModalDrawerSheet {
         LazyColumn(
@@ -61,6 +73,53 @@ fun DrawerMenu(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+            item {
+                Text(
+                    "Metody sortowania",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentWidth(Alignment.CenterHorizontally),
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = nunitoSansFontFamily
+                )
+            }
+            item {
+                SortRadioButtonGroup(selectedSort)
+            }
+            item {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    Text(
+                        text = "Sortowanie: ",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(end = 8.dp)
+                    )
+
+                    IconButton(
+                        onClick = { isAscending.value = !isAscending.value },
+                        modifier = Modifier.size(32.dp)
+                    ) {
+                        Icon(
+                            imageVector = if (isAscending.value) Icons.Default.ArrowUpward else Icons.Default.ArrowDownward,
+                            contentDescription = if (isAscending.value) "Rosnąco" else "Malejąco",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+
+                    Text(
+                        text = if (isAscending.value) "Rosnąco" else "Malejąco",
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
+                }
+            }
             item {
                 Spacer(Modifier.height(16.dp))
                 Text(
@@ -86,6 +145,19 @@ fun DrawerMenu(
                     thickness = 1.dp
                 )
                 Text(
+                    text = "Status",
+                    modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = nunitoSansFontFamily
+                )
+                FilterCheckboxesList(
+                    filterTypes = listOf("Aktywny", "Nieaktywny", "Planowany"),
+                    filterStates = statusFilterState
+                )
+            }
+            item {
+                Text(
                     text = "Dostępne mięsa",
                     modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp),
                     fontSize = 18.sp,
@@ -93,7 +165,13 @@ fun DrawerMenu(
                     fontFamily = nunitoSansFontFamily
                 )
                 FilterCheckboxesList(
-                    filterTypes = listOf("Chicken", "Beef", "Lamb", "Pork", "Falafel"),
+                    filterTypes = listOf(
+                        "Kurczak",
+                        "Wołowina",
+                        "Jagnięcina",
+                        "Wieprzowina",
+                        "Falafel"
+                    ),
                     filterStates = meatFilterState
                 )
             }
@@ -106,31 +184,20 @@ fun DrawerMenu(
                     fontFamily = nunitoSansFontFamily
                 )
                 FilterCheckboxesList(
-                    filterTypes = listOf("Mild", "Garlic", "Spicy", "Mixed"),
+                    filterTypes = listOf("Łagodny", "Czosnkowy", "Pikantny", "Mieszany"),
                     filterStates = sauceFilterState
                 )
-
             }
             item {
-                Text(
-                    "Metody sortowania",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentWidth(Alignment.CenterHorizontally),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = nunitoSansFontFamily
-                )
-            }
-            item {
-                SortRadioButtonGroup(selectedSort)
-            }
-            item {
-                Spacer(Modifier.height(16.dp))
                 Button(
                     onClick = {
-                        println("Wybrane filtry: ${filters.filter { it.isSelected }}")
-                        println("Wybrana opcja sortowania: ${selectedSort.value}")
+                        coroutineScope.launch {
+                            kebabViewModel.applySort(
+                                selectedSort.value,
+                                isAscending.value
+                            )
+                            drawerState.close()
+                        }
                     },
                     modifier = Modifier
                         .fillMaxWidth()

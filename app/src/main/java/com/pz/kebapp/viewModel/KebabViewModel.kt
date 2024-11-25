@@ -21,7 +21,7 @@ class KebabViewModel : ViewModel() {
             )
         },
         onRequest = { nextPage ->
-            kebabRepository.getKebabsList(nextPage)
+            kebabRepository.getKebabsList(nextPage, state.sortBy, state.isAscending)
         },
         getNextPage = {
             state.page + 1
@@ -49,6 +49,20 @@ class KebabViewModel : ViewModel() {
             pagination.loadNextPage()
         }
     }
+
+    fun applySort(selectedSort: String?, isAscending: Boolean) {
+        viewModelScope.launch {
+            state = state.copy(
+                kebabs = emptyList(),
+                page = 1,
+                sortBy = selectedSort,
+                isAscending = isAscending
+            )
+
+            pagination.reset()
+            pagination.loadNextPage()
+        }
+    }
 }
 
 data class ScreenState(
@@ -56,5 +70,7 @@ data class ScreenState(
     val page: Int = 1,
     val endReached: Boolean = false,
     val error: String? = null,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val sortBy: String? = null,
+    val isAscending: Boolean = true
 )

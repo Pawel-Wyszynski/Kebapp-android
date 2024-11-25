@@ -59,7 +59,9 @@ interface ApiService {
 
     @GET("kebabs/paginated?")
     suspend fun getKebabs(
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("orderByAsc") orderByAsc: String? = null,
+        @Query("orderByDesc") orderByDesc: String? = null
     ): Response<KebabsList>
 
     companion object {

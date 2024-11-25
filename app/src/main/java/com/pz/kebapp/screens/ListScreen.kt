@@ -52,17 +52,16 @@ fun ListScreen(
 
     val filters = listOf(
         FilterItem("isOpenNow", "Otwarte teraz"),
-        FilterItem("isCraft", "Rzemieślnicze"),
-        FilterItem("status", "Aktywny"),
-        FilterItem("status", "Nieaktywny"),
-        FilterItem("status", "Planowany"),
+        FilterItem("isCraft", "Kebab craftowy"),
         FilterItem("isChainStore", "Sieciówka"),
         FilterItem("isFoodTruck", "Food truck")
     )
 
     val meatFilterState = remember { mutableStateListOf(false, false, false, false, false) }
     val sauceFilterState = remember { mutableStateListOf(false, false, false, false) }
-    var selectedSort = remember { mutableStateOf<String?>(null) }
+    val statusFilterState = remember { mutableStateListOf(false, false, false) }
+    val isAscending = remember { mutableStateOf(false) }
+    val selectedSort = remember { mutableStateOf<String?>(null) }
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
@@ -74,9 +73,12 @@ fun ListScreen(
                 filters = filters,
                 meatFilterState = meatFilterState,
                 sauceFilterState = sauceFilterState,
+                statusFilterState = statusFilterState,
                 selectedSort = selectedSort,
+                isAscending = isAscending,
                 coroutineScope = coroutineScope,
-                drawerState = drawerState
+                drawerState = drawerState,
+                kebabViewModel = kebabViewModel
             )
         }
     ) {
