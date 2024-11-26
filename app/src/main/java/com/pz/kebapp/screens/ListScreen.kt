@@ -15,9 +15,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -28,6 +34,9 @@ import com.pz.kebapp.R
 import com.pz.kebapp.components.HeadingTextComponent
 import com.pz.kebapp.components.ImageComponent
 import com.pz.kebapp.components.KebabItemComponent
+import com.pz.kebapp.filters.DrawerMenu
+import com.pz.kebapp.filters.FilterItem
+import com.pz.kebapp.filters.TopBar
 import com.pz.kebapp.navigation.BottomNavigationBar
 import com.pz.kebapp.ui.theme.Background
 import com.pz.kebapp.viewModel.KebabViewModel
@@ -40,62 +49,131 @@ fun ListScreen(
     val state = kebabViewModel.state
     val context = LocalContext.current
 
-    Scaffold(
-        bottomBar = {
-            BottomNavigationBar(screen = "Kebaby", navController)
-        },
-        content = { paddingValues ->
-            Surface(
-                color = Background,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Background)
-                    .padding(28.dp, 28.dp, 28.dp, paddingValues.calculateBottomPadding())
-            ) {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize()
+    val filters = listOf(
+        FilterItem("isOpenNow", "Otwarte teraz"),
+        FilterItem("isCraft", "Kebab craftowy"),
+        FilterItem("isChainStore", "Sieciówka"),
+        FilterItem("isFoodTruck", "Food truck")
+    )
+
+    val orderFilters = listOf(
+        FilterItem("hasGlovo", "Glovo"),
+        FilterItem("hasPyszne", "Pyszne.pl"),
+        FilterItem("hasUberEats", "Uber Eats"),
+        FilterItem("hasPhone", "Telefonicznie"),
+        FilterItem("hasWebsite", "Przez stronę internetową")
+    )
+
+    val meatFilters = listOf(
+        FilterItem("Chicken", "Kurczak"),
+        FilterItem("Beef", "Wołowina"),
+        FilterItem("Lamb", "Baranina"),
+        FilterItem("Pork", "Wieprzowina"),
+        FilterItem("Falafel", "Falafel")
+    )
+
+    val sauceFilters = listOf(
+        FilterItem("Mild", "Łagodny"),
+        FilterItem("Garlic", "Czosnkowy"),
+        FilterItem("Spicy", "Pikantny"),
+        FilterItem("Mixed", "Mieszany")
+    )
+
+    val statusFilters = listOf(
+        FilterItem("active", "Aktywny"),
+        FilterItem("planned", "Planowany"),
+        FilterItem("inactive", "Nieaktywny")
+    )
+
+    val isAscending = remember { mutableStateOf(false) }
+    val selectedSort = remember { mutableStateOf<String?>(null) }
+    val coroutineScope = rememberCoroutineScope()
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        gesturesEnabled = true,
+        drawerContent = {
+            DrawerMenu(
+                filters = filters,
+                orderFilters = orderFilters,
+                meatFilters = meatFilters,
+                sauceFilters = sauceFilters,
+                statusFilters = statusFilters,
+                selectedSort = selectedSort,
+                isAscending = isAscending,
+                coroutineScope = coroutineScope,
+                drawerState = drawerState,
+                kebabViewModel = kebabViewModel
+            )
+        }
+    ) {
+        Scaffold(
+            topBar = {
+                TopBar(
+                    coroutineScope = coroutineScope,
+                    drawerState = drawerState
+                )
+            },
+
+            bottomBar = {
+                BottomNavigationBar(screen = "Kebaby", navController)
+            },
+            content = { paddingValues ->
+                Surface(
+                    color = Background,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Background)
+                        .padding(28.dp, 28.dp, 28.dp, paddingValues.calculateBottomPadding())
                 ) {
-                    item {
-                        Column {
-                            ImageComponent(
-                                painterResource = painterResource(id = R.drawable.brodacz)
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(top = 16.dp)
+                    ) {
+                        item {
+                            Column {
+                                ImageComponent(
+                                    painterResource = painterResource(id = R.drawable.brodacz)
+                                )
+                                Spacer(modifier = Modifier.height(20.dp))
+
+                                HeadingTextComponent(value = "Lista restauracji z kebabami")
+
+                                Spacer(modifier = Modifier.height(16.dp))
+                            }
+                        }
+                        items(state.kebabs) { kebab ->
+                            KebabItemComponent(
+                                kebab = kebab,
+                                icon = Icons.AutoMirrored.Filled.ArrowForwardIos,
+                                onSelect = {
+                                    navController.navigate("details/${kebab.id}")
+                                }
                             )
-                            Spacer(modifier = Modifier.height(20.dp))
-
-                            HeadingTextComponent(value = "Lista restauracji z kebabami")
-
-                            Spacer(modifier = Modifier.height(16.dp))
                         }
-                    }
-                    items(state.kebabs) { kebab ->
-                        KebabItemComponent(
-                            kebab = kebab,
-                            icon = Icons.AutoMirrored.Filled.ArrowForwardIos,
-                            onSelect = {
-                                navController.navigate("details/${kebab.id}")
+                        item {
+                            if (state.isLoading) {
+                                Row(
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(8.dp),
+                                    horizontalArrangement = Arrangement.Center
+                                ) {
+                                    CircularProgressIndicator()
+                                }
                             }
-                        )
-                    }
-                    item {
-                        if (state.isLoading) {
-                            Row(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(8.dp),
-                                horizontalArrangement = Arrangement.Center
-                            ) {
-                                CircularProgressIndicator()
+                            if (!state.error.isNullOrEmpty()) {
+                                Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
                             }
                         }
-                        if (!state.error.isNullOrEmpty()) {
-                            Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
-                        }
                     }
-                }
-                if (!state.endReached && !state.isLoading) {
-                    kebabViewModel.loadNextKebabs()
+                    if (!state.endReached && !state.isLoading) {
+                        kebabViewModel.loadNextKebabs()
+                    }
                 }
             }
-        }
-    )
+        )
+    }
 }

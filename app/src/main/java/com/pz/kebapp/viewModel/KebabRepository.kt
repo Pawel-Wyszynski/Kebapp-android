@@ -6,10 +6,66 @@ import com.pz.kebapp.data.models.KebabsList
 import retrofit2.Response
 
 class KebabRepository {
-    suspend fun getKebabsList(page: Int): Response<KebabsList> {
+    suspend fun getKebabsList(
+        page: Int,
+        sortBy: String? = null,
+        isAscending: Boolean,
+        filters: Map<String, Boolean>? = null,
+        orderFilters: Map<String, Boolean>? = null,
+        meatFilters: List<String>? = null,
+        sauceFilters: List<String>? = null,
+        statusFilters: List<String>? = null
+    ): Response<KebabsList> {
         val apiClient = ApiClient()
 
-        return apiClient.getApiService().getKebabs(page)
+        val isOpenNow = filters?.get("isOpenNow")?.takeIf { it }
+        val isCraft = filters?.get("isCraft")?.takeIf { it }
+        val isChainStore = filters?.get("isChainStore")?.takeIf { it }
+        val isFoodTruck = filters?.get("isFoodTruck")?.takeIf { it }
+        val hasGlovo = orderFilters?.get("hasGlovo")?.takeIf { it }
+        val hasPyszne = orderFilters?.get("hasPyszne")?.takeIf { it }
+        val hasUberEats = orderFilters?.get("hasUberEats")?.takeIf { it }
+        val hasPhone = orderFilters?.get("hasPhone")?.takeIf { it }
+        val hasWebsite = orderFilters?.get("hasWebsite")?.takeIf { it }
+        val sauces = sauceFilters?.takeIf { it.isNotEmpty() }?.joinToString(",")
+        val meats = meatFilters?.takeIf { it.isNotEmpty() }?.joinToString(",")
+        val statuses = statusFilters?.takeIf { it.isNotEmpty() }?.joinToString(",")
+
+        return if (isAscending) {
+            apiClient.getApiService().getKebabs(
+                page = page,
+                orderByAsc = sortBy,
+                isOpenNow = isOpenNow,
+                isCraft = isCraft,
+                isChainStore = isChainStore,
+                isFoodTruck = isFoodTruck,
+                hasGlovo = hasGlovo,
+                hasPyszne = hasPyszne,
+                hasUberEats = hasUberEats,
+                hasPhone = hasPhone,
+                hasWebsite = hasWebsite,
+                sauces = sauces,
+                meatTypes = meats,
+                statuses = statuses
+            )
+        } else {
+            apiClient.getApiService().getKebabs(
+                page = page,
+                orderByDesc = sortBy,
+                isOpenNow = isOpenNow,
+                isCraft = isCraft,
+                isChainStore = isChainStore,
+                isFoodTruck = isFoodTruck,
+                hasGlovo = hasGlovo,
+                hasPyszne = hasPyszne,
+                hasUberEats = hasUberEats,
+                hasPhone = hasPhone,
+                hasWebsite = hasWebsite,
+                sauces = sauces,
+                meatTypes = meats,
+                statuses = statuses
+            )
+        }
     }
 
     suspend fun getAllKebabsList(): Response<List<Data>> {

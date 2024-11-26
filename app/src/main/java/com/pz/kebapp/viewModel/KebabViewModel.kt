@@ -21,7 +21,16 @@ class KebabViewModel : ViewModel() {
             )
         },
         onRequest = { nextPage ->
-            kebabRepository.getKebabsList(nextPage)
+            kebabRepository.getKebabsList(
+                nextPage,
+                state.sortBy,
+                state.isAscending,
+                state.filters,
+                state.orderFilters,
+                state.meatFilters,
+                state.sauceFilters,
+                state.statusFilters
+            )
         },
         getNextPage = {
             state.page + 1
@@ -49,6 +58,37 @@ class KebabViewModel : ViewModel() {
             pagination.loadNextPage()
         }
     }
+
+    fun applySort(
+        selectedSort: String?,
+        isAscending: Boolean,
+        filters: Map<String, Boolean>,
+        orderFilters: Map<String, Boolean>,
+        meatFilters: List<String>,
+        sauceFilters: List<String>,
+        statusFilters: List<String>
+    ) {
+        val cleanedMeatFilters = meatFilters.takeIf { it.isNotEmpty() }
+        val cleanedSauceFilters = sauceFilters.takeIf { it.isNotEmpty() }
+        val cleanedStatusFilters = statusFilters.takeIf { it.isNotEmpty() }
+
+        viewModelScope.launch {
+            state = state.copy(
+                kebabs = emptyList(),
+                page = 1,
+                sortBy = selectedSort,
+                isAscending = isAscending,
+                filters = filters,
+                orderFilters = orderFilters,
+                meatFilters = cleanedMeatFilters ?: emptyList(),
+                sauceFilters = cleanedSauceFilters ?: emptyList(),
+                statusFilters = cleanedStatusFilters ?: emptyList()
+            )
+
+            pagination.reset()
+            pagination.loadNextPage()
+        }
+    }
 }
 
 data class ScreenState(
@@ -56,5 +96,12 @@ data class ScreenState(
     val page: Int = 1,
     val endReached: Boolean = false,
     val error: String? = null,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val sortBy: String? = null,
+    val isAscending: Boolean = true,
+    val filters: Map<String, Boolean> = emptyMap(),
+    val orderFilters: Map<String, Boolean> = emptyMap(),
+    val meatFilters: List<String> = emptyList(),
+    val sauceFilters: List<String> = emptyList(),
+    val statusFilters: List<String> = emptyList()
 )
