@@ -11,6 +11,7 @@ class KebabRepository {
         sortBy: String? = null,
         isAscending: Boolean,
         filters: Map<String, Boolean>? = null,
+        orderFilters: Map<String, Boolean>? = null,
         meatFilters: List<String>? = null,
         sauceFilters: List<String>? = null,
         statusFilters: List<String>? = null
@@ -21,6 +22,11 @@ class KebabRepository {
         val isCraft = filters?.get("isCraft")?.takeIf { it }
         val isChainStore = filters?.get("isChainStore")?.takeIf { it }
         val isFoodTruck = filters?.get("isFoodTruck")?.takeIf { it }
+        val hasGlovo = orderFilters?.get("hasGlovo")?.takeIf { it }
+        val hasPyszne = orderFilters?.get("hasPyszne")?.takeIf { it }
+        val hasUberEats = orderFilters?.get("hasUberEats")?.takeIf { it }
+        val hasPhone = orderFilters?.get("hasPhone")?.takeIf { it }
+        val hasWebsite = orderFilters?.get("hasWebsite")?.takeIf { it }
         val sauces = sauceFilters?.takeIf { it.isNotEmpty() }?.joinToString(",")
         val meats = meatFilters?.takeIf { it.isNotEmpty() }?.joinToString(",")
         val statuses = statusFilters?.takeIf { it.isNotEmpty() }?.joinToString(",")
@@ -33,6 +39,11 @@ class KebabRepository {
                 isCraft = isCraft,
                 isChainStore = isChainStore,
                 isFoodTruck = isFoodTruck,
+                hasGlovo = hasGlovo,
+                hasPyszne = hasPyszne,
+                hasUberEats = hasUberEats,
+                hasPhone = hasPhone,
+                hasWebsite = hasWebsite,
                 sauces = sauces,
                 meatTypes = meats,
                 statuses = statuses
@@ -45,6 +56,11 @@ class KebabRepository {
                 isCraft = isCraft,
                 isChainStore = isChainStore,
                 isFoodTruck = isFoodTruck,
+                hasGlovo = hasGlovo,
+                hasPyszne = hasPyszne,
+                hasUberEats = hasUberEats,
+                hasPhone = hasPhone,
+                hasWebsite = hasWebsite,
                 sauces = sauces,
                 meatTypes = meats,
                 statuses = statuses

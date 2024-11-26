@@ -56,6 +56,14 @@ fun ListScreen(
         FilterItem("isFoodTruck", "Food truck")
     )
 
+    val orderFilters = listOf(
+        FilterItem("hasGlovo", "Glovo"),
+        FilterItem("hasPyszne", "Pyszne.pl"),
+        FilterItem("hasUberEats", "Uber Eats"),
+        FilterItem("hasPhone", "Telefonicznie"),
+        FilterItem("hasWebsite", "Przez stronę internetową")
+    )
+
     val meatFilters = listOf(
         FilterItem("Chicken", "Kurczak"),
         FilterItem("Beef", "Wołowina"),
@@ -88,6 +96,7 @@ fun ListScreen(
         drawerContent = {
             DrawerMenu(
                 filters = filters,
+                orderFilters = orderFilters,
                 meatFilters = meatFilters,
                 sauceFilters = sauceFilters,
                 statusFilters = statusFilters,

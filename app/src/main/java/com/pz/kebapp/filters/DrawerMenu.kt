@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.ArrowUpward
-import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.DrawerState
@@ -37,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.pz.kebapp.components.ButtonComponent
 import com.pz.kebapp.ui.theme.nunitoSansFontFamily
 import com.pz.kebapp.viewModel.KebabViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -56,6 +56,7 @@ data class SortOption(
 @Composable
 fun DrawerMenu(
     filters: List<FilterItem>,
+    orderFilters: List<FilterItem>,
     meatFilters: List<FilterItem>,
     sauceFilters: List<FilterItem>,
     statusFilters: List<FilterItem>,
@@ -135,7 +136,19 @@ fun DrawerMenu(
             items(filters) { filter ->
                 FilterCheckbox(filter)
             }
+            item {
+                Text(
+                    "Jak złożyć zamówienie",
+                    modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = nunitoSansFontFamily
+                )
+            }
 
+            items(orderFilters) { filter ->
+                FilterCheckbox(filter)
+            }
             item {
                 Text(
                     text = "Dostępne mięsa",
@@ -173,11 +186,15 @@ fun DrawerMenu(
                 }
             }
             item {
-                Button(
-                    onClick = {
+                ButtonComponent(
+                    value = "Zastosuj",
+                    onSelect = {
                         coroutineScope.launch {
                             val selectedFilters =
                                 filters.associate { it.key to it.isSelected }.filter { it.value }
+                            val selectedOrderFilters =
+                                orderFilters.associate { it.key to it.isSelected }
+                                    .filter { it.value }
 
                             val selectedMeatFilters =
                                 meatFilters.filter { it.isSelected }.map { it.key }
@@ -189,19 +206,15 @@ fun DrawerMenu(
                                 selectedSort.value,
                                 isAscending.value,
                                 selectedFilters,
+                                selectedOrderFilters,
                                 selectedMeatFilters,
                                 selectedSauceFilters,
                                 selectedStatusFilters
                             )
                             drawerState.close()
                         }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                ) {
-                    Text("Zastosuj")
-                }
+                    }
+                )
                 Spacer(Modifier.height(16.dp))
             }
         }

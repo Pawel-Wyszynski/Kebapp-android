@@ -66,6 +66,11 @@ interface ApiService {
         @Query("isCraft") isCraft: Boolean? = null,
         @Query("isChainStore") isChainStore: Boolean? = null,
         @Query("isFoodTruck") isFoodTruck: Boolean? = null,
+        @Query("hasGlovo") hasGlovo: Boolean? = null,
+        @Query("hasPyszne") hasPyszne: Boolean? = null,
+        @Query("hasUberEats") hasUberEats: Boolean? = null,
+        @Query("hasPhone") hasPhone: Boolean? = null,
+        @Query("hasWebsite") hasWebsite: Boolean? = null,
         @Query("sauces") sauces: String? = null,
         @Query("meatTypes") meatTypes: String? = null,
         @Query("statuses") statuses: String? = null

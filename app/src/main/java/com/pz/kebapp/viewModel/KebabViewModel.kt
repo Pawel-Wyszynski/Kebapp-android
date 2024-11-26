@@ -26,6 +26,7 @@ class KebabViewModel : ViewModel() {
                 state.sortBy,
                 state.isAscending,
                 state.filters,
+                state.orderFilters,
                 state.meatFilters,
                 state.sauceFilters,
                 state.statusFilters
@@ -62,6 +63,7 @@ class KebabViewModel : ViewModel() {
         selectedSort: String?,
         isAscending: Boolean,
         filters: Map<String, Boolean>,
+        orderFilters: Map<String, Boolean>,
         meatFilters: List<String>,
         sauceFilters: List<String>,
         statusFilters: List<String>
@@ -77,6 +79,7 @@ class KebabViewModel : ViewModel() {
                 sortBy = selectedSort,
                 isAscending = isAscending,
                 filters = filters,
+                orderFilters = orderFilters,
                 meatFilters = cleanedMeatFilters ?: emptyList(),
                 sauceFilters = cleanedSauceFilters ?: emptyList(),
                 statusFilters = cleanedStatusFilters ?: emptyList()
@@ -97,6 +100,7 @@ data class ScreenState(
     val sortBy: String? = null,
     val isAscending: Boolean = true,
     val filters: Map<String, Boolean> = emptyMap(),
+    val orderFilters: Map<String, Boolean> = emptyMap(),
     val meatFilters: List<String> = emptyList(),
     val sauceFilters: List<String> = emptyList(),
     val statusFilters: List<String> = emptyList()
