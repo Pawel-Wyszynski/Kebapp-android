@@ -21,7 +21,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -57,9 +56,27 @@ fun ListScreen(
         FilterItem("isFoodTruck", "Food truck")
     )
 
-    val meatFilterState = remember { mutableStateListOf(false, false, false, false, false) }
-    val sauceFilterState = remember { mutableStateListOf(false, false, false, false) }
-    val statusFilterState = remember { mutableStateListOf(false, false, false) }
+    val meatFilters = listOf(
+        FilterItem("Chicken", "Kurczak"),
+        FilterItem("Beef", "Wołowina"),
+        FilterItem("Lamb", "Baranina"),
+        FilterItem("Pork", "Wieprzowina"),
+        FilterItem("Falafel", "Falafel")
+    )
+
+    val sauceFilters = listOf(
+        FilterItem("Mild", "Łagodny"),
+        FilterItem("Garlic", "Czosnkowy"),
+        FilterItem("Spicy", "Pikantny"),
+        FilterItem("Mixed", "Mieszany")
+    )
+
+    val statusFilters = listOf(
+        FilterItem("active", "Aktywny"),
+        FilterItem("planned", "Planowany"),
+        FilterItem("inactive", "Nieaktywny")
+    )
+
     val isAscending = remember { mutableStateOf(false) }
     val selectedSort = remember { mutableStateOf<String?>(null) }
     val coroutineScope = rememberCoroutineScope()
@@ -71,9 +88,9 @@ fun ListScreen(
         drawerContent = {
             DrawerMenu(
                 filters = filters,
-                meatFilterState = meatFilterState,
-                sauceFilterState = sauceFilterState,
-                statusFilterState = statusFilterState,
+                meatFilters = meatFilters,
+                sauceFilters = sauceFilters,
+                statusFilters = statusFilters,
                 selectedSort = selectedSort,
                 isAscending = isAscending,
                 coroutineScope = coroutineScope,
@@ -89,6 +106,7 @@ fun ListScreen(
                     drawerState = drawerState
                 )
             },
+
             bottomBar = {
                 BottomNavigationBar(screen = "Kebaby", navController)
             },

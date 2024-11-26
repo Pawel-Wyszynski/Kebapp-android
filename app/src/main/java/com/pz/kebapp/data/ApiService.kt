@@ -61,8 +61,16 @@ interface ApiService {
     suspend fun getKebabs(
         @Query("page") page: Int,
         @Query("orderByAsc") orderByAsc: String? = null,
-        @Query("orderByDesc") orderByDesc: String? = null
+        @Query("orderByDesc") orderByDesc: String? = null,
+        @Query("isOpenNow") isOpenNow: Boolean? = null,
+        @Query("isCraft") isCraft: Boolean? = null,
+        @Query("isChainStore") isChainStore: Boolean? = null,
+        @Query("isFoodTruck") isFoodTruck: Boolean? = null,
+        @Query("sauces") sauces: String? = null,
+        @Query("meatTypes") meatTypes: String? = null,
+        @Query("statuses") statuses: String? = null
     ): Response<KebabsList>
+
 
     companion object {
         const val BASE_URL = "https://kebapp.bity24h.pl/api/"

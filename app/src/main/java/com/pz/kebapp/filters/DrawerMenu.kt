@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -57,9 +56,9 @@ data class SortOption(
 @Composable
 fun DrawerMenu(
     filters: List<FilterItem>,
-    meatFilterState: MutableList<Boolean>,
-    sauceFilterState: MutableList<Boolean>,
-    statusFilterState: MutableList<Boolean>,
+    meatFilters: List<FilterItem>,
+    sauceFilters: List<FilterItem>,
+    statusFilters: List<FilterItem>,
     selectedSort: MutableState<String?>,
     isAscending: MutableState<Boolean>,
     coroutineScope: CoroutineScope,
@@ -136,26 +135,7 @@ fun DrawerMenu(
             items(filters) { filter ->
                 FilterCheckbox(filter)
             }
-            item {
-                Divider(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
-                    color = Color.Gray,
-                    thickness = 1.dp
-                )
-                Text(
-                    text = "Status",
-                    modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = nunitoSansFontFamily
-                )
-                FilterCheckboxesList(
-                    filterTypes = listOf("Aktywny", "Nieaktywny", "Planowany"),
-                    filterStates = statusFilterState
-                )
-            }
+
             item {
                 Text(
                     text = "Dostępne mięsa",
@@ -164,16 +144,9 @@ fun DrawerMenu(
                     fontWeight = FontWeight.Bold,
                     fontFamily = nunitoSansFontFamily
                 )
-                FilterCheckboxesList(
-                    filterTypes = listOf(
-                        "Kurczak",
-                        "Wołowina",
-                        "Jagnięcina",
-                        "Wieprzowina",
-                        "Falafel"
-                    ),
-                    filterStates = meatFilterState
-                )
+                meatFilters.forEach { filter ->
+                    FilterCheckbox(filter)
+                }
             }
             item {
                 Text(
@@ -183,18 +156,42 @@ fun DrawerMenu(
                     fontWeight = FontWeight.Bold,
                     fontFamily = nunitoSansFontFamily
                 )
-                FilterCheckboxesList(
-                    filterTypes = listOf("Łagodny", "Czosnkowy", "Pikantny", "Mieszany"),
-                    filterStates = sauceFilterState
+                sauceFilters.forEach { filter ->
+                    FilterCheckbox(filter)
+                }
+            }
+            item {
+                Text(
+                    text = "Status",
+                    modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = nunitoSansFontFamily
                 )
+                statusFilters.forEach { filter ->
+                    FilterCheckbox(filter)
+                }
             }
             item {
                 Button(
                     onClick = {
                         coroutineScope.launch {
+                            val selectedFilters =
+                                filters.associate { it.key to it.isSelected }.filter { it.value }
+
+                            val selectedMeatFilters =
+                                meatFilters.filter { it.isSelected }.map { it.key }
+                            val selectedSauceFilters =
+                                sauceFilters.filter { it.isSelected }.map { it.key }
+                            val selectedStatusFilters =
+                                statusFilters.filter { it.isSelected }.map { it.key }
                             kebabViewModel.applySort(
                                 selectedSort.value,
-                                isAscending.value
+                                isAscending.value,
+                                selectedFilters,
+                                selectedMeatFilters,
+                                selectedSauceFilters,
+                                selectedStatusFilters
                             )
                             drawerState.close()
                         }
@@ -233,43 +230,6 @@ fun FilterCheckbox(filter: FilterItem) {
         Text(text = filter.label, modifier = Modifier.padding(start = 8.dp))
     }
 }
-
-@Composable
-fun FilterCheckboxesList(
-    filterTypes: List<String>,
-    filterStates: MutableList<Boolean>
-) {
-    filterTypes.forEachIndexed { index, filter ->
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        ) {
-            Checkbox(
-                checked = filterStates[index],
-                onCheckedChange = { checked ->
-                    filterStates[index] = checked
-                },
-                colors = CheckboxDefaults.colors(checkedColor = Color.Green)
-            )
-            Text(
-                text = filter,
-                fontSize = 16.sp,
-                color = Color.Black,
-                modifier = Modifier.padding(start = 8.dp)
-            )
-        }
-    }
-    Divider(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        color = Color.Gray,
-        thickness = 1.dp
-    )
-}
-
 
 @Composable
 fun SortRadioButtonGroup(selectedSort: MutableState<String?>) {
