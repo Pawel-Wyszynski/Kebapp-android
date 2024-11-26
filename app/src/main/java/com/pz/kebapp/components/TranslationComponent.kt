@@ -31,7 +31,7 @@ fun translatedType(type: String): String {
     return when (type) {
         "Chicken" -> "Kurczak"
         "Beef" -> "Wołowina"
-        "Lamb" -> "Jagnięcina"
+        "Lamb" -> "Baranina"
         "Pork" -> "Wieprzowina"
         "Falafel" -> "Falafel"
         "Mild" -> "Łagodny"
