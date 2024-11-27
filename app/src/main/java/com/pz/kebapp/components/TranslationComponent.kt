@@ -20,8 +20,8 @@ fun translatedDay(day: String): String {
 fun translatedStatus(status: String): String {
     return when (status) {
         "active" -> "Aktywny"
-        "inactive" -> "Nieaktywny"
-        "planned" -> "Planowany"
+        "inactive" -> "Zamknięty"
+        "planned" -> "W planach"
         else -> "Nieznany"
     }
 }

@@ -34,6 +34,7 @@ import com.pz.kebapp.R
 import com.pz.kebapp.components.HeadingTextComponent
 import com.pz.kebapp.components.ImageComponent
 import com.pz.kebapp.components.KebabItemComponent
+import com.pz.kebapp.components.KebabsNumberComponent
 import com.pz.kebapp.filters.DrawerMenu
 import com.pz.kebapp.filters.FilterItem
 import com.pz.kebapp.filters.TopBar
@@ -90,6 +91,10 @@ fun ListScreen(
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
+    val activeCount = state.kebabs.count { it.status == "active" }
+    val plannedCount = state.kebabs.count { it.status == "planned" }
+    val inactiveCount = state.kebabs.count { it.status == "inactive" }
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         gesturesEnabled = true,
@@ -115,7 +120,6 @@ fun ListScreen(
                     drawerState = drawerState
                 )
             },
-
             bottomBar = {
                 BottomNavigationBar(screen = "Kebaby", navController)
             },
@@ -137,9 +141,18 @@ fun ListScreen(
                                 ImageComponent(
                                     painterResource = painterResource(id = R.drawable.brodacz)
                                 )
+
                                 Spacer(modifier = Modifier.height(20.dp))
 
                                 HeadingTextComponent(value = "Lista restauracji z kebabami")
+
+                                Spacer(modifier = Modifier.height(20.dp))
+
+                                KebabsNumberComponent(
+                                    activeValue = activeCount,
+                                    plannedValue = plannedCount,
+                                    inactiveValue = inactiveCount
+                                )
 
                                 Spacer(modifier = Modifier.height(16.dp))
                             }
