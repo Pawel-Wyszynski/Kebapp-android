@@ -13,14 +13,13 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDownward
-import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -99,23 +98,25 @@ fun DrawerMenu(
                         text = "Sortowanie: ",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
+                        fontFamily = nunitoSansFontFamily,
                         modifier = Modifier.padding(end = 8.dp)
                     )
-
                     IconButton(
                         onClick = { isAscending.value = !isAscending.value },
                         modifier = Modifier.size(32.dp)
                     ) {
                         Icon(
-                            imageVector = if (isAscending.value) Icons.Default.ArrowUpward else Icons.Default.ArrowDownward,
+                            imageVector = if (isAscending.value) {
+                                Icons.Default.ArrowDropUp
+                            } else Icons.Default.ArrowDropDown,
                             contentDescription = if (isAscending.value) "Rosnąco" else "Malejąco",
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = Color.Black
                         )
                     }
-
                     Text(
                         text = if (isAscending.value) "Rosnąco" else "Malejąco",
                         fontSize = 16.sp,
+                        fontFamily = nunitoSansFontFamily,
                         modifier = Modifier.padding(start = 8.dp)
                     )
                 }
@@ -132,7 +133,6 @@ fun DrawerMenu(
                     fontFamily = nunitoSansFontFamily
                 )
             }
-
             items(filters) { filter ->
                 FilterCheckbox(filter)
             }
@@ -145,7 +145,6 @@ fun DrawerMenu(
                     fontFamily = nunitoSansFontFamily
                 )
             }
-
             items(orderFilters) { filter ->
                 FilterCheckbox(filter)
             }
@@ -195,7 +194,6 @@ fun DrawerMenu(
                             val selectedOrderFilters =
                                 orderFilters.associate { it.key to it.isSelected }
                                     .filter { it.value }
-
                             val selectedMeatFilters =
                                 meatFilters.filter { it.isSelected }.map { it.key }
                             val selectedSauceFilters =
@@ -215,12 +213,10 @@ fun DrawerMenu(
                         }
                     }
                 )
-                Spacer(Modifier.height(16.dp))
             }
         }
     }
 }
-
 
 @Composable
 fun FilterCheckbox(filter: FilterItem) {
@@ -240,7 +236,12 @@ fun FilterCheckbox(filter: FilterItem) {
             },
             colors = CheckboxDefaults.colors(checkedColor = Color.Green)
         )
-        Text(text = filter.label, modifier = Modifier.padding(start = 8.dp))
+        Text(
+            text = filter.label,
+            fontSize = 16.sp,
+            fontFamily = nunitoSansFontFamily,
+            modifier = Modifier.padding(start = 8.dp)
+        )
     }
 }
 
@@ -266,7 +267,12 @@ fun SortRadioButtonGroup(selectedSort: MutableState<String?>) {
                     selected = selectedSort.value == option.key,
                     onClick = { selectedSort.value = option.key }
                 )
-                Text(text = option.label, modifier = Modifier.padding(start = 8.dp))
+                Text(
+                    text = option.label,
+                    fontSize = 16.sp,
+                    fontFamily = nunitoSansFontFamily,
+                    modifier = Modifier.padding(start = 8.dp)
+                )
             }
         }
     }
