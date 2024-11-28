@@ -29,6 +29,7 @@ import com.pz.kebapp.R
 import com.pz.kebapp.components.HeadingTextComponent
 import com.pz.kebapp.components.ImageComponent
 import com.pz.kebapp.components.KebabItemComponent
+import com.pz.kebapp.components.KebabsNumberComponent
 import com.pz.kebapp.navigation.BottomNavigationBar
 import com.pz.kebapp.ui.theme.Background
 import com.pz.kebapp.viewModel.UserViewModel
@@ -40,6 +41,10 @@ fun FavoritesScreen(
     val context = LocalContext.current
     val userViewModel = remember { UserViewModel(context) }
     val state = userViewModel.state
+
+    val activeCount = state.likedKebabs.count { it.status == "active" }
+    val plannedCount = state.likedKebabs.count { it.status == "planned" }
+    val inactiveCount = state.likedKebabs.count { it.status == "inactive" }
 
     var isListLoaded by remember {
         mutableStateOf(state.likedKebabs.isNotEmpty())
@@ -77,6 +82,14 @@ fun FavoritesScreen(
                                     Spacer(modifier = Modifier.height(20.dp))
 
                                     HeadingTextComponent(value = "Ulubione restauracje z kebabami")
+
+                                    Spacer(modifier = Modifier.height(20.dp))
+
+                                    KebabsNumberComponent(
+                                        activeValue = activeCount,
+                                        plannedValue = plannedCount,
+                                        inactiveValue = inactiveCount
+                                    )
 
                                     Spacer(modifier = Modifier.height(16.dp))
                                 }
