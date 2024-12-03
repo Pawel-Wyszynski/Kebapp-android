@@ -20,6 +20,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -85,6 +86,7 @@ fun HomeScreen(
                 GoogleMap(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .testTag("Mapa")
                         .height(450.dp),
                     onMapLoaded = {
                         isMapLoaded = true

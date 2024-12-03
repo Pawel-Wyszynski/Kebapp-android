@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -63,7 +64,9 @@ fun FavoritesScreen(
                     .padding(28.dp, 28.dp, 28.dp, paddingValues.calculateBottomPadding())
             ) {
                 Box(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .testTag("Ulubione")
                 ) {
                     if (!isListLoaded) {
                         CircularProgressIndicator(
