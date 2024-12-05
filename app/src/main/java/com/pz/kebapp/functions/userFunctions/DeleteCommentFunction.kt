@@ -2,6 +2,7 @@ package com.pz.kebapp.functions.userFunctions
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.navigation.NavHostController
 import com.pz.kebapp.data.ApiClient
 import com.pz.kebapp.data.SessionManager
@@ -33,8 +34,10 @@ fun deleteCommentFunction(
             ) {
                 if (response.isSuccessful) {
                     navHostController.navigate("details/$id")
+                    Toast.makeText(context, "Usunięto komentarz", Toast.LENGTH_SHORT).show()
                 } else {
                     Log.d("Error", "Usunięcie komentarza nie powiodło się")
+                    Toast.makeText(context, "Coś poszło nie tak", Toast.LENGTH_SHORT).show()
                 }
             }
         })
