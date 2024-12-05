@@ -36,6 +36,7 @@ fun loginFunction(
 
                 if (loginResponse?.accessToken != null) {
                     sessionManager.saveAuthToken(loginResponse.accessToken)
+                    Toast.makeText(context, "Zalogowano", Toast.LENGTH_SHORT).show()
                     navHostController.navigate("home")
                 } else {
                     Log.d("Error", "Błąd logowania")

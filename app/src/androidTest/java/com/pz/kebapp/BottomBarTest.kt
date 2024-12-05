@@ -15,7 +15,7 @@ import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-class BottomBarTests {
+class BottomBarTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -31,14 +31,14 @@ class BottomBarTests {
             .edit()
             .clear()
             .apply()
+
+        composeTestRule.setContent {
+            Navigation()
+        }
     }
 
     @Test
     fun testHomeButton() {
-        composeTestRule.setContent {
-            Navigation()
-        }
-
         composeTestRule.onNodeWithText("Home").performClick()
 
         composeTestRule.onNode(hasTestTag("Mapa")).assertExists()
@@ -46,10 +46,6 @@ class BottomBarTests {
 
     @Test
     fun testListButton() {
-        composeTestRule.setContent {
-            Navigation()
-        }
-
         composeTestRule.onNodeWithText("Kebaby").performClick()
 
         composeTestRule.onNode(hasTestTag("Lista")).assertExists()
@@ -57,10 +53,6 @@ class BottomBarTests {
 
     @Test
     fun testFavoritesButtonNotLoggedIn() {
-        composeTestRule.setContent {
-            Navigation()
-        }
-
         composeTestRule.onNodeWithText("Ulubione").performClick()
 
         composeTestRule.onNode(hasTestTag("Guest")).assertExists()
@@ -68,10 +60,6 @@ class BottomBarTests {
 
     @Test
     fun testContactUsButtonNotLoggedIn() {
-        composeTestRule.setContent {
-            Navigation()
-        }
-
         composeTestRule.onNodeWithText("Kontakt").performClick()
 
         composeTestRule.onNode(hasTestTag("Guest")).assertExists()
@@ -80,10 +68,6 @@ class BottomBarTests {
     @Test
     fun testFavoritesButton() {
         sessionManager.saveAuthToken("token")
-
-        composeTestRule.setContent {
-            Navigation()
-        }
 
         composeTestRule.onNodeWithText("Ulubione").performClick()
 
@@ -94,21 +78,13 @@ class BottomBarTests {
     fun testContactUsButton() {
         sessionManager.saveAuthToken("token")
 
-        composeTestRule.setContent {
-            Navigation()
-        }
-
         composeTestRule.onNodeWithText("Kontakt").performClick()
 
         composeTestRule.onNode(hasTestTag("Kontakt")).assertExists()
     }
 
     @Test
-    fun testLoginButton() {
-        composeTestRule.setContent {
-            Navigation()
-        }
-
+    fun testProfileButton() {
         composeTestRule.onNodeWithText("Konto").performClick()
 
         composeTestRule.onNode(hasTestTag("Login")).assertExists()

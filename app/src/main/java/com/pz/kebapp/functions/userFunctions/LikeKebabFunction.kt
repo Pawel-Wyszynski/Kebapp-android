@@ -2,6 +2,7 @@ package com.pz.kebapp.functions.userFunctions
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.navigation.NavHostController
 import com.pz.kebapp.data.ApiClient
 import com.pz.kebapp.data.SessionManager
@@ -34,6 +35,11 @@ fun likeKebabFunction(
                     navHostController.navigate("details/$id")
                 } else {
                     Log.d("Error", "Nie udało się zmienić statusu lajka")
+                    Toast.makeText(
+                        context,
+                        "Proszę najpierw się zalogować",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         })

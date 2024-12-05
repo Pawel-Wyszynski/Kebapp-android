@@ -19,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -56,6 +57,7 @@ fun SignUpScreen(
                 color = Background,
                 modifier = Modifier
                     .fillMaxSize()
+                    .testTag("Register")
                     .background(Background)
                     .padding(28.dp, 28.dp, 28.dp, paddingValues.calculateBottomPadding())
                     .verticalScroll(scrollState)

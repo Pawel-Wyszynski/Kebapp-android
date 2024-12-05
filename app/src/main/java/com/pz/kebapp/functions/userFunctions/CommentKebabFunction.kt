@@ -2,6 +2,7 @@ package com.pz.kebapp.functions.userFunctions
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.navigation.NavHostController
 import com.pz.kebapp.data.ApiClient
 import com.pz.kebapp.data.SessionManager
@@ -37,8 +38,14 @@ fun commentKebabFunction(
             ) {
                 if (response.isSuccessful) {
                     navHostController.navigate("details/$id")
+                    Toast.makeText(context, "Dodano komentarz", Toast.LENGTH_SHORT).show()
                 } else {
                     Log.d("Error", "Dodanie komentarza nie powiodło się")
+                    Toast.makeText(
+                        context,
+                        "Proszę najpierw się zalogować",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         })
