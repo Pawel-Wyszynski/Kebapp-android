@@ -1,6 +1,8 @@
 package com.pz.kebapp.screens
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Comment
 import androidx.compose.material.icons.filled.AccessTime
@@ -31,6 +34,7 @@ import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Store
 import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material.icons.filled.Web
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -50,8 +54,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -162,6 +170,15 @@ fun KebabDetailsScreen(
                                         Icons.Default.LocationOn,
                                         "Koordynaty:",
                                         "X: ${it.coordinatesX}, Y: ${it.coordinatesY}"
+                                    )
+                                    KebabInfo(
+                                        Icons.Default.Web,
+                                        "Strona internetowa:",
+                                        if (it.websiteLink == null) {
+                                            "Brak danych"
+                                        } else {
+                                            it.websiteLink.toString()
+                                        }
                                     )
                                     KebabInfo(
                                         Icons.Default.Event,
@@ -373,6 +390,8 @@ fun CheckboxesList(
 
 @Composable
 fun KebabInfo(icon: ImageVector, label: String, value: String) {
+    val context = LocalContext.current
+
     Row {
         Icon(
             imageVector = icon,
@@ -387,9 +406,37 @@ fun KebabInfo(icon: ImageVector, label: String, value: String) {
             fontFamily = nunitoSansFontFamily
         )
     }
-
-    Text(text = value, fontSize = 18.sp)
-
+    if (value.startsWith("http")) {
+        val annotatedLinkString = buildAnnotatedString {
+            withStyle(
+                style = TextStyle(
+                    color = Color.Blue,
+                    textDecoration = TextDecoration.Underline
+                ).toSpanStyle()
+            ) {
+                append(value)
+            }
+            addStringAnnotation(
+                tag = "URL",
+                annotation = value,
+                start = 0,
+                end = value.length
+            )
+        }
+        ClickableText(
+            text = annotatedLinkString,
+            style = TextStyle(fontSize = 18.sp),
+            onClick = { offset ->
+                annotatedLinkString.getStringAnnotations("URL", offset, offset)
+                    .firstOrNull()?.let { annotation ->
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(annotation.item))
+                        context.startActivity(intent)
+                    }
+            }
+        )
+    } else {
+        Text(text = value, fontSize = 18.sp)
+    }
     Divider(
         modifier = Modifier
             .fillMaxWidth()
