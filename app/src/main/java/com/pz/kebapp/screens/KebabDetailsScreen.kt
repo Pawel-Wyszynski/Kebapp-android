@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.Event
+import androidx.compose.material.icons.filled.GetApp
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KebabDining
 import androidx.compose.material.icons.filled.LocationOn
@@ -178,6 +179,15 @@ fun KebabDetailsScreen(
                                             "Brak danych"
                                         } else {
                                             it.websiteLink.toString()
+                                        }
+                                    )
+                                    KebabInfo(
+                                        Icons.Default.GetApp,
+                                        "Aplikacja mobilna:",
+                                        if (it.appLink == null) {
+                                            "Brak danych"
+                                        } else {
+                                            it.appLink.toString()
                                         }
                                     )
                                     KebabInfo(
