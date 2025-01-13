@@ -53,7 +53,7 @@ fun ListScreen(
 
     val filters = listOf(
         FilterItem("isOpenNow", "Otwarte teraz"),
-        FilterItem("isCraft", "Kebab craftowy"),
+        FilterItem("isCraft", "Kebab kraftowy"),
         FilterItem("isChainStore", "Sieciówka"),
         FilterItem("isFoodTruck", "Food truck")
     )
