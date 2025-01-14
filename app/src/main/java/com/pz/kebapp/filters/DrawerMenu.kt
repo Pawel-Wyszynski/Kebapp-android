@@ -249,7 +249,8 @@ fun FilterCheckbox(filter: FilterItem) {
 fun SortRadioButtonGroup(selectedSort: MutableState<String?>) {
     val sortOptions = listOf(
         SortOption("name", "Nazwa"),
-        SortOption("glovoRates", "Oceny"),
+        SortOption("glovoRates", "Oceny z Glovo"),
+        SortOption("googleRates", "Oceny z Google"),
         SortOption("openingYear", "Rok otwarcia"),
         SortOption("closingYear", "Rok zamknięcia")
     )

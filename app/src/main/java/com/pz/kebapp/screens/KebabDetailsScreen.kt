@@ -33,6 +33,7 @@ import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material.icons.filled.Store
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.filled.Web
@@ -80,9 +81,11 @@ import com.pz.kebapp.functions.userFunctions.likeKebabFunction
 import com.pz.kebapp.navigation.BottomNavigationBar
 import com.pz.kebapp.ui.theme.Background
 import com.pz.kebapp.ui.theme.Gray
+import com.pz.kebapp.ui.theme.StarColor
 import com.pz.kebapp.ui.theme.nunitoSansFontFamily
 import com.pz.kebapp.viewModel.DetailsViewModel
 import com.pz.kebapp.viewModel.UserViewModel
+import kotlin.math.roundToInt
 
 @Composable
 fun KebabDetailsScreen(
@@ -215,6 +218,15 @@ fun KebabDetailsScreen(
                                             "Brak danych"
                                         } else {
                                             "${it.glovoRates}% użytkowników Glovo poleca tego kebaba"
+                                        }
+                                    )
+                                    KebabInfo(
+                                        Icons.Default.Star,
+                                        "Ocena z Google:",
+                                        if (it.googleRates == null) {
+                                            "Brak danych"
+                                        } else {
+                                            it.googleRates.toString()
                                         }
                                     )
                                     KebabInfo(
@@ -416,7 +428,22 @@ fun KebabInfo(icon: ImageVector, label: String, value: String) {
             fontFamily = nunitoSansFontFamily
         )
     }
-    if (value.startsWith("http")) {
+    if (label == "Ocena z Google:") {
+        val rating = value.toDouble()
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = value, fontSize = 18.sp)
+            repeat(5) { index ->
+                Icon(
+                    imageVector = if (index < rating.roundToInt()) {
+                        Icons.Default.Star
+                    } else Icons.Default.StarBorder,
+                    contentDescription = "Rating Star",
+                    tint = StarColor
+                )
+            }
+        }
+    } else if (value.startsWith("http")) {
         val annotatedLinkString = buildAnnotatedString {
             withStyle(
                 style = TextStyle(

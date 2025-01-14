@@ -17,6 +17,7 @@ data class Data(
     val websiteLink: String?,
     val glovoUrl: String?,
     val glovoRates: Int?,
+    val googleRates: Double?,
     val hasGlovo: Boolean,
     val hasPyszne: Boolean,
     val hasUberEats: Boolean,
